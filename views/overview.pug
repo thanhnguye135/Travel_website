@@ -1,0 +1,75 @@
+doctype html
+html(lang='vi')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(rel='preconnect', href='https://fonts.googleapis.com')
+    link(rel='preconnect', href='https://fonts.gstatic.com', crossorigin='')
+    link(href='https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap', rel='stylesheet')
+    link(rel='stylesheet', href='css/home.css')
+    link(rel='stylesheet', href='css/footer.css')
+    link(rel='shortcut icon', type='image/png', href='img/favicon.png')
+    title Giới thiệu các chuyến đi du lịch
+  body
+    header.header
+      nav.nav.nav--tours
+        a.nav__el(href='/overview') Tất cả chuyến đi
+        form.nav__search
+          button.nav__search-btn
+            svg
+              use(xlink:href='img/icons.svg#icon-search')
+          input.nav__search-input(type='text', placeholder='Tìm kiếm')
+      .header__logo
+        img(src='img/logo-white.png', alt='Natours logo')
+      nav.nav.nav--user
+        if user
+          a.nav__el.nav__el--logout Đăng xuất
+          a.nav__el(href='/account')
+            img.nav__user-img(src=`img/users/${user.photo}`, alt=`This is photo of ${user.name}`)
+            span=user.name.split(' ')[0]
+        else 
+          a.nav__el(href='/login') Đăng nhập
+          a.nav__el.nav__el--cta(href='/signup') Đăng ký
+   
+    main.main
+      .card-container
+        each tour in tours
+          .card
+            .card__header
+              .card__picture
+                .card__picture-overlay &nbsp;
+                img.card__picture-img(src=`${tour.imageCover}`, alt=`${tour.name}`)
+              h3.heading-tertirary
+                span=tour.name
+            .card__details
+              h4.card__sub-heading=`${tour.difficulty} ${tour.duration}-day tour`
+              p.card__text=tour.summary
+              .card__data
+                svg.card__icon
+                  use(xlink:href='img/icons.svg#icon-map-pin')
+                span=tour.startLocation.description
+              .card__data
+                svg.card__icon
+                  use(xlink:href='img/icons.svg#icon-calendar')
+                span=tour.startDates[0].toLocaleString('en-us', {month: 'long', year: 'numeric'})
+              .card__data
+                svg.card__icon
+                  use(xlink:href='img/icons.svg#icon-flag')
+                span=`${tour.locations.length} stops`
+              .card__data
+                svg.card__icon
+                  use(xlink:href='img/icons.svg#icon-user')
+                span=`${tour.maxGroupSize} people`
+            .card__footer
+              p
+                span.card__footer-value=`${tour.price} VND / `
+                span.card__footer-text một người
+              p.card__ratings
+                span.card__footer-value=`${tour.ratingsAverage}`
+                span.card__footer-text=`(${tour.ratingsQuantity})`
+              a.btn.btn--green.btn--small(href=`/tours/${tour.slug}`) Chi tiết
+        
+    include _footer
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js')
+    script(src='/script/login.js') 
+    script(src='/script/logout.js') 

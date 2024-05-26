@@ -1,0 +1,53 @@
+doctype html
+html(lang='vi')
+  head
+    meta(name='viewport', content='width=device-width')
+    meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+    title= subject
+    link(rel='stylesheet', href='css/welcome.css')
+
+      
+  body
+    table.body(role='presentation', border='0', cellpadding='0', cellspacing='0')
+      tbody
+        tr
+          td
+          td.container
+            .content
+              // START CENTERED WHITE CONTAINER
+              table.main(role='presentation')
+
+                // START MAIN AREA
+                tbody
+                  tr
+                    td.wrapper
+                      table(role='presentation', border='0', cellpadding='0', cellspacing='0')
+                        tbody
+                          tr
+                            td
+                              // CONTENT
+                              p Xin chào, #{name}
+                              p Chào mừng bạn đến với Du lịch Việt, chúng tôi rất vui khi có bạn đồng hành 🎉🙏
+                              p We're all a big familiy here, so make sure to upload your user photo so we get to know you a bit better!
+                              table.btn.btn-primary(role='presentation', border='0', cellpadding='0', cellspacing='0')
+                                tbody
+                                  tr
+                                    td(align='left')
+                                      table(role='presentation', border='0', cellpadding='0', cellspacing='0')
+                                        tbody
+                                          tr
+                                            td
+                                              a(href=`${url}`, target='_blank') Upload user photo
+                              p Nếu bạn cần bất cứ sự trợ giúp nào với vấn đề đặt vé du lịch, đừng do dự hãy liên hệ với tôi ngay!
+                              p - ThanhNG, CEO
+
+              // START FOOTER
+              .footer
+                table(role='presentation', border='0', cellpadding='0', cellspacing='0')
+                  tbody
+                    tr
+                      td.content-block
+                        span.apple-link Natours Inc, 123 Nowhere Road, San Francisco CA 99999
+                        br
+                        |  Don't like these emails? 
+                        a(href='#') Unsubscribe

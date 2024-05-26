@@ -1,0 +1,125 @@
+mixin reviewBox(review)
+  .reviews__card
+    .reviews__avatar
+      img.reviews__avatar-img(src=`/img/users/${review.user.photo}`, alt=`${review.user.name}`)
+      h6.reviews__user=review.user.name
+    p.reviews__text=review.review 
+    .reviews__rating
+      each star in [1, 2, 3, 4, 5]
+        - const cssClass = review.rating >= star ? "active"  : "inactive"
+        svg.reviews__star(class=`reviews__star--${cssClass}`)
+          use(xlink:href='/img/icons.svg#icon-star')
+        
+
+
+doctype html
+html(lang='vi')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(rel='preconnect', href='https://fonts.googleapis.com')
+    link(rel='preconnect', href='https://fonts.gstatic.com', crossorigin='')
+    link(href='https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap', rel='stylesheet')
+    link(rel='stylesheet', href='/css/icon-font.css')
+    link(rel='stylesheet', href='/css/home.css')
+    link(rel='stylesheet', href='/css/footer.css')
+    link(rel='shortcut icon', type='image/png', href='/img/favicon.png')
+    title Giới thiệu các chuyến đi du lịch
+  body
+    header.header
+      nav.nav.nav--tours
+        a.nav__el(href='/overview') Tất cả chuyến đi
+        form.nav__search
+          button.nav__search-btn
+            svg
+              use(xlink:href='/img/icons.svg#icon-search')
+          input.nav__search-input(type='text', placeholder='Tìm kiếm ')
+      .header__logo
+        img(src='/img/logo-white.png', alt='Natours logo')
+      nav.nav.nav--user
+        a.nav__el.nav__el--logout Đăng xuất
+        a.nav__el(href='/account')
+          img.nav__user-img(src=`/img/users/${user.name}`, alt=`This is photo of ${user.name}`)
+          span=user.name.split(' ')[0]
+
+
+    section.section-header
+      .heading-box
+        h1.heading-primary
+          span=tour.name
+        .heading-box__group
+          .heading-box__detail
+            svg.heading-box__icon
+              use(xlink:href='/img/icons.svg#icon-clock')
+            span.heading-box__text=`${tour.duration} day`
+          .heading-box__detail
+            svg.heading-box__icon
+              use(xlink:href='/img/icons.svg#icon-map-pin')
+            span.heading-box__text=tour.startLocation.description
+    section.section-description
+      .overview-box
+        div
+          .overview-box__group
+            h2.heading-secondary.ma-bt-lg Thông tin nhanh
+            .overview-box__detail
+              svg.overview-box__icon
+                use(xlink:href='/img/icons.svg#icon-calendar')
+              span.overview-box__label Khởi hành
+              span.overview-box__text=tour.startDates[0].toLocaleString('en-us', {month: 'long', year: 'numeric'})
+            .overview-box__detail
+              svg.overview-box__icon
+                use(xlink:href='/img/icons.svg#icon-trending-up')
+              span.overview-box__label Độ khó
+              span.overview-box__text=tour.difficulty
+            .overview-box__detail
+              svg.overview-box__icon
+                use(xlink:href='/img/icons.svg#icon-user')
+              span.overview-box__label Số lượng người
+              span.overview-box__text=`${tour.maxGroupSize} people`
+            .overview-box__detail
+              svg.overview-box__icon
+                use(xlink:href='/img/icons.svg#icon-star')
+              span.overview-box__label Đánh giá
+              span.overview-box__text=`${tour.ratingsAverage} / 5`
+          .overview-box__group
+            h2.heading-secondary.ma-bt-lg Hướng dẫn viên của bạn
+            each guide in tour.guides
+              .overview-box__detail
+                img.overview-box__img(src=`/img/users/${guide.photo}`, alt=guide.role)
+                span.overview-box__label=guide.role
+                span.overview-box__text=guide.name 
+            
+      .description-box
+        h2.heading-secondary.ma-bt-lg=`Giới thiệu về chuyến đi ${tour.name}`
+        - const pharas = tour.description.split('\n');
+        each phara in pharas
+          p.description__text=phara 
+         
+    section.section-pictures
+      each pic, i in tour.images
+        .picture-box
+          img.picture-box__img(src=`/img/tours/${pic}`, alt=`${pic} ${i + 1}`, class=`picture-box__img--${i + 1}`)
+
+    section.section-reviews
+      .reviews
+        each review in tour.reviews
+          +reviewBox(review)
+
+    section.section-cta
+      .cta
+        .cta__img.cta__img--logo
+          img(src='/img/logo-white.png', alt='Natours logo')
+        img.cta__img.cta__img--1(src=`/img/tours/${tour.images[1]}`, alt='Natours logo')
+        img.cta__img.cta__img--2(src=`/img/tours/${tour.images[2]}`, alt='Natours logo')
+        .cta__content
+          h2.heading-secondary What are you waiting for?
+          p.cta__text 10 days. 1 adventure. Infinite memories. Make it yours today!
+
+          if user 
+            button.btn.btn--green.span-all-rows#book-tour(data-tour-id=`${tour.id}`) Book tour now!
+          else 
+            a.btn.btn--green.span-all-rows(href='/login') Login to book tour
+      
+    include _footer
+
+    script(src='https://js.stripe.com/v3/')

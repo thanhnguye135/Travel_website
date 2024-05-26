@@ -1,0 +1,128 @@
+.footer {
+  padding: 7rem 0;
+  color: #f7f7f7;
+  background-color: #000;
+  font-size: 1.5rem;
+}
+.footer__logo-box {
+  height: 13rem;
+  text-align: center;
+  margin-bottom: 7rem;
+}
+@media only screen and (max-width: 37.5em) {
+  .footer__logo-box {
+    margin-bottom: 3rem;
+    height: 7rem;
+  }
+}
+.footer__logo-box--img {
+  height: 100%;
+  width: auto;
+}
+.footer__navigation {
+  border-top: 1px solid #f7f7f7;
+  padding-top: 2rem;
+  display: inline-block;
+}
+@media only screen and (max-width: 56.25em) {
+  .footer__navigation {
+    width: 100%;
+    text-align: center;
+  }
+}
+.footer__list {
+  list-style: none;
+}
+ol,
+ul {
+  padding-left: 0;
+}
+.footer__item {
+  display: inline-block;
+}
+.footer__item:not(:last-child) {
+  margin-right: 1rem;
+}
+.footer__link:link,
+.footer__link:visited {
+  text-decoration: none;
+  color: inherit;
+  text-transform: uppercase;
+}
+.footer__link:hover,
+.footer__link:active {
+  transform: scale(1.5);
+  color: #55c57a;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.4);
+}
+.footer__copyright {
+  border-top: 1px solid #f7f7f7;
+  padding-top: 2rem;
+  margin-left: 5.5rem;
+}
+@media only screen and (max-width: 56.25em) {
+  .footer__copyright {
+    width: 100%;
+    margin: 0;
+  }
+}
+
+.row {
+  max-width: 114rem;
+  margin: 0 auto;
+}
+.row:not(:last-child) {
+  margin-bottom: 8rem;
+}
+@media only screen and (max-width: 56.25em) {
+  .row {
+    max-width: 70rem;
+    padding: 0 3rem;
+  }
+}
+@media only screen and (max-width: 37.5em) {
+  .row {
+    max-width: 50rem;
+    padding: 0 2.5rem;
+  }
+}
+.row::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.row [class^='col-'] {
+  float: left;
+}
+.row [class^='col-']:not(:last-child) {
+  margin-right: 6rem;
+}
+@media only screen and (max-width: 56.25em) {
+  .row [class^='col-']:not(:last-child) {
+    margin-right: 0;
+    margin-bottom: 5rem;
+  }
+}
+@media only screen and (max-width: 56.25em) {
+  .row [class^='col-'] {
+    width: 100% !important;
+  }
+}
+.row .col-1-of-2 {
+  width: calc((100% - 6rem) / 2);
+}
+.row .col-1-of-3 {
+  width: calc((100% - 2 * 6rem) / 3);
+}
+.row .col-2-of-3 {
+  width: calc(2 * ((100% - 2 * 6rem) / 3) + 6rem);
+}
+.row .col-1-of-4 {
+  width: calc((100% - 3 * 6rem) / 4);
+}
+.row .col-2-of-4 {
+  width: calc(2 * ((100% - 3 * 6rem) / 4) + 6rem);
+}
+.row .col-3-of-4 {
+  width: calc(3 * ((100% - 3 * 6rem) / 4) + 2 * 6rem);
+}
