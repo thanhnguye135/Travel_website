@@ -1,5 +1,6 @@
 const Tour = require('../models/tourModel');
 const User = require('../models/userModel');
+const Review = require('../models/reviewModel');
 const BookingTour = require('../models/bookingModel');
 const AppError = require('../utils/appError');
 const catchingErrorAsync = require('../utils/catchingErrorAsync');
@@ -17,9 +18,25 @@ exports.getHome = catchingErrorAsync(async (req, res, next) => {
   res.status(200).render('home', { tour });
 });
 
-exports.getAdmin = (req, res) => {
-  res.status(200).render('admin');
-};
+exports.getAdmin = catchingErrorAsync(async (req, res, next) => {
+  const user = req.user;
+
+  if (user.role !== 'admin') {
+    return next(
+      new AppError(
+        'Người dùng không tồn tại. Vui lòng đăng nhập tài khoản hợp lệ!',
+        404
+      )
+    );
+  }
+
+  const tours = await Tour.find();
+  const users = await User.find();
+  const reviews = await Review.find();
+  const bookings = await BookingTour.find();
+
+  res.status(200).render('admin', { user, tours, users, reviews, bookings });
+});
 
 exports.getTravel = (req, res) => {
   res.status(200).render('travel');

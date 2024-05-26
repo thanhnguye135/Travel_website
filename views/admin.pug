@@ -1,3 +1,51 @@
+mixin userRow(index, name, photo, email, role)
+  tr
+    th(scope='row') #{index}
+    td #{name}
+    td 
+      img(src=`/img/users/${photo}`, alt=`This is photo of ${name}`, width="128", height="128")
+    td #{email}
+    td #{role}
+    td
+      i.fa-regular.fa-eye
+    td
+      i.fa-regular.fa-pen-to-square
+    td
+      i.fa-regular.fa-trash-can
+
+mixin tourRow(index, name, duration, maxGroupSize, difficulty, ratingsAverage, ratingsQuantity, startDates)
+  tr
+    th(scope='row') #{index}
+    td #{name}
+    td #{duration}
+    td #{maxGroupSize}
+    td #{difficulty}
+    td #{ratingsAverage}
+    td #{ratingsQuantity}
+    td #{startDates}
+    td
+      i.fa-regular.fa-eye
+    td
+      i.fa-regular.fa-pen-to-square
+    td
+      i.fa-regular.fa-trash-can
+
+mixin reviewRow(index, user_name, tour_name, review, rating, creatAt)
+  tr
+    th(scope='row') #{index}
+    td #{user_name}
+    td #{tour_name}
+    td #{review}
+    td #{rating}
+    td #{creatAt}
+    td
+      i.fa-regular.fa-eye
+    td
+      i.fa-regular.fa-pen-to-square
+    td
+      i.fa-regular.fa-trash-can
+
+
 doctype html 
 html(lang='vi')
     head 
@@ -11,15 +59,6 @@ html(lang='vi')
         link(rel="stylesheet", href="css/admin.css")
         title Dashboard administration
     body
-        //- nav.navbar
-        //-     .container-fluid
-        //-         a.navbar-brand.d-flex.justify-content-center.align-items-center.text-header(href='#') 
-        //-             img.img-fluid.w-25.p-3(src='img/favicon.png', alt='logo of this site')
-        //-             |Travel management system
-        //-         form.d-flex
-        //-             .d-grid.gap-3.d-md-flex.justify-content-md-end
-        //-                 button.btn.btn-outline-success.active(type='button') Login
-        //-                 button.btn.btn-outline-secondary(type='button') Logout
         header.header
             nav.nav.nav--tours
                 a.nav__el(href='overview') Hệ thống quản lý du lịch
@@ -27,10 +66,10 @@ html(lang='vi')
             .header__logo
                 img(src='img/logo-white.png', alt='Natours logo')
             nav.nav.nav--user
-                button.nav__el Đăng xuất
+                a.nav__el.nav__el--logout Đăng xuất
                 a.nav__el(href='#')
-                    img.nav__user-img(src='img/user.jpg', alt='User photo')
-                    span Jonas
+                    img.nav__user-img(src=`/img/users/${user.photo}`, alt=`This is photo of ${user.name}`)
+                    span=user.name.split(' ')[0]
         main
             div.d-flex.p-0.h-100(role='tabpanel')
     
@@ -55,90 +94,18 @@ html(lang='vi')
                                     th(scope='col') Xóa
 
                             tbody
-                                tr
-                                    th(scope='row') 1
-                                    td Mark
-                                    td Otto
-                                    td @mdo
-                                    td User
-                                    td
-                                        i.fa-regular.fa-eye
-                                    td
-                                        i.fa-regular.fa-pen-to-square
-                                    td
-                                        i.fa-regular.fa-trash-can
-                                tr
-                                    th(scope='row') 2
-                                    td Jacob
-                                    td Thornton
-                                    td @fat
-                                    td User
-                                    td
-                                        i.fa-regular.fa-eye
-                                    td
-                                        i.fa-regular.fa-pen-to-square
-                                    td
-                                        i.fa-regular.fa-trash-can
-                                tr
-                                    th(scope='row') 3
-                                    td(colspan='2') Larry the Bird
-                                    td @twitter
-                                    td User
-                                    td
-                                        i.fa-regular.fa-eye
-                                    td
-                                        i.fa-regular.fa-pen-to-square
-                                    td
-                                        i.fa-regular.fa-trash-can
-
-                                tr
-                                    th(scope='row') 1
-                                    td Mark
-                                    td Otto
-                                    td @mdo
-                                    td User
-                                    td
-                                        i.fa-regular.fa-eye
-                                    td
-                                        i.fa-regular.fa-pen-to-square
-                                    td
-                                        i.fa-regular.fa-trash-can
-                                tr
-                                    th(scope='row') 2
-                                    td Jacob
-                                    td Thornton
-                                    td @fat
-                                    td User
-                                    td
-                                        i.fa-regular.fa-eye
-                                    td
-                                        i.fa-regular.fa-pen-to-square
-                                    td
-                                        i.fa-regular.fa-trash-can
-                                tr
-                                    th(scope='row') 3
-                                    td(colspan='2') Larry the Bird
-                                    td @twitter
-                                    td User
-                                    td
-                                        i.fa-regular.fa-eye
-                                    td
-                                        i.fa-regular.fa-pen-to-square
-                                    td
-                                        i.fa-regular.fa-trash-can
+                                each user, i in users
+                                    +userRow(i + 1, user.name, user.photo, user.email, user.role)
 
                         nav(aria-label='Page navigation example')
                             ul.pagination.justify-content-center
-                                li.page-item.disabled
-                                a.page-link(href='#', tabindex='-1', aria-disabled='true') Previous
-                                li.page-item
-                                a.page-link(href='#') 1
-                                li.page-item
-                                a.page-link(href='#') 2
-                                li.page-item
-                                a.page-link(href='#') 3
-                                li.page-item
-                                a.page-link(href='#') Next        
+                                li.page-item.previous(class=(currentPage === 1 ? 'disabled' : ''))
+                                    a.page-link(href='#', tabindex='-1', aria-disabled=(currentPage === 1 ? 'true' : 'false')) Previous
+                                each page in Array.from(Array(totalPages).keys())
+                                    li.page-item(class=(currentPage === page + 1 ? 'active' : ''))
+                                        a.page-link(href='#') #{page + 1}
+                                li.page-item.next(class=(currentPage === totalPages ? 'disabled' : ''))
+                                    a.page-link(href='#') Next
                     #tours.tab-pane(role='tabpanel')
                         table.table
                             thead
@@ -157,95 +124,8 @@ html(lang='vi')
 
 
                             tbody
-                                tr
-                                    th(scope='row') 1
-                                    td Mark
-                                    td Otto
-                                    td @mdo
-                                    td Mark
-                                    td Otto
-                                    td @mdo
-                                    td @mdo
-                                    td
-                                        i.fa-regular.fa-eye
-                                    td
-                                        i.fa-regular.fa-pen-to-square
-                                    td
-                                        i.fa-regular.fa-trash-can
-                                tr
-                                    th(scope='row') 2
-                                    td Jacob
-                                    td Thornton
-                                    td @fat
-                                    td Mark
-                                    td Otto
-                                    td @mdo
-                                    td @mdo
-                                    td
-                                        i.fa-regular.fa-eye
-                                    td
-                                        i.fa-regular.fa-pen-to-square
-                                    td
-                                        i.fa-regular.fa-trash-can
-                                tr
-                                    th(scope='row') 3
-                                    td(colspan='2') Larry the Bird
-                                    td @twitter
-                                    td Mark
-                                    td Otto
-                                    td @mdo
-                                    td @mdo
-                                    td
-                                        i.fa-regular.fa-eye
-                                    td
-                                        i.fa-regular.fa-pen-to-square
-                                    td
-                                        i.fa-regular.fa-trash-can
-
-                                tr
-                                    th(scope='row') 1
-                                    td Mark
-                                    td Otto
-                                    td @mdo
-                                    td Mark
-                                    td Otto
-                                    td @mdo
-                                    td @mdo
-                                    td
-                                        i.fa-regular.fa-eye
-                                    td
-                                        i.fa-regular.fa-pen-to-square
-                                    td
-                                        i.fa-regular.fa-trash-can
-                                tr
-                                    th(scope='row') 2
-                                    td Jacob
-                                    td Thornton
-                                    td @fat
-                                    td Mark
-                                    td Otto
-                                    td @mdo
-                                    td @mdo
-                                    td
-                                        i.fa-regular.fa-eye
-                                    td
-                                        i.fa-regular.fa-pen-to-square
-                                    td
-                                        i.fa-regular.fa-trash-can
-                                tr
-                                    th(scope='row') 3
-                                    td(colspan='2') Larry the Bird
-                                    td @twitter
-                                    td Mark
-                                    td Otto
-                                    td @mdo
-                                    td @mdo
-                                    td
-                                        i.fa-regular.fa-eye
-                                    td
-                                        i.fa-regular.fa-pen-to-square
-                                    td
-                                        i.fa-regular.fa-trash-can
+                                each tour, i in tours
+                                    +tourRow(i + 1, tour.name, tour.duration, tour.maxGroupSize, tour.difficulty, tour.ratingsAverage, tour.ratingsQuantity, tour.startDates[0].toLocaleDateString('en-GB').replace(/\//g, '-'))
 
                         nav(aria-label='Page navigation example')
                             ul.pagination.justify-content-center
@@ -263,185 +143,45 @@ html(lang='vi')
                         table.table
                             thead
                                 tr
-                                    th(scope='col') #id
-                                    th(scope='col') #user_id
-                                    th(scope='col') #tour_id
+                                    th(scope='col') #
+                                    th(scope='col') Tên người dùng
+                                    th(scope='col') Tên chuyến đi
                                     th(scope='col') Đánh giá
+                                    th(scope='col') Sao đánh giá
                                     th(scope='col') Thời gian
                                     th(scope='col') Xem
                                     th(scope='col') Sửa
                                     th(scope='col') Xóa
 
                             tbody
-                                tr
-                                    th(scope='row') 1
-                                    td Mark
-                                    td Otto
-                                    td @mdo
-                                    td User
-                                    td
-                                        i.fa-regular.fa-eye
-                                    td
-                                        i.fa-regular.fa-pen-to-square
-                                    td
-                                        i.fa-regular.fa-trash-can
-                                tr
-                                    th(scope='row') 2
-                                    td Jacob
-                                    td Thornton
-                                    td @fat
-                                    td User
-                                    td
-                                        i.fa-regular.fa-eye
-                                    td
-                                        i.fa-regular.fa-pen-to-square
-                                    td
-                                        i.fa-regular.fa-trash-can
-                                tr
-                                    th(scope='row') 3
-                                    td(colspan='2') Larry the Bird
-                                    td @twitter
-                                    td User
-                                    td
-                                        i.fa-regular.fa-eye
-                                    td
-                                        i.fa-regular.fa-pen-to-square
-                                    td
-                                        i.fa-regular.fa-trash-can
-
-                                tr
-                                    th(scope='row') 1
-                                    td Mark
-                                    td Otto
-                                    td @mdo
-                                    td User
-                                    td
-                                        i.fa-regular.fa-eye
-                                    td
-                                        i.fa-regular.fa-pen-to-square
-                                    td
-                                        i.fa-regular.fa-trash-can
-                                tr
-                                    th(scope='row') 2
-                                    td Jacob
-                                    td Thornton
-                                    td @fat
-                                    td User
-                                    td
-                                        i.fa-regular.fa-eye
-                                    td
-                                        i.fa-regular.fa-pen-to-square
-                                    td
-                                        i.fa-regular.fa-trash-can
-                                tr
-                                    th(scope='row') 3
-                                    td(colspan='2') Larry the Bird
-                                    td @twitter
-                                    td User
-                                    td
-                                        i.fa-regular.fa-eye
-                                    td
-                                        i.fa-regular.fa-pen-to-square
-                                    td
-                                        i.fa-regular.fa-trash-can
+                                each review, i in reviews
+                                    +reviewRow(i + 1, review.user.name, review.tour.name, review.review, review.rating, review.creatAt.toLocaleDateString('en-GB').replace(/\//g, '-'))
 
                         nav(aria-label='Page navigation example')
                             ul.pagination.justify-content-center
-                                li.page-item.disabled
-                                a.page-link(href='#', tabindex='-1', aria-disabled='true') Previous
-                                li.page-item
-                                a.page-link(href='#') 1
-                                li.page-item
-                                a.page-link(href='#') 2
-                                li.page-item
-                                a.page-link(href='#') 3
-                                li.page-item
-                                a.page-link(href='#') Next      
+                                li.page-item.previous(class=(currentPage === 1 ? 'disabled' : ''))
+                                    a.page-link(href='#', tabindex='-1', aria-disabled=(currentPage === 1 ? 'true' : 'false')) Previous
+                                each page in Array.from(Array(totalPages).keys())
+                                    li.page-item(class=(currentPage === page + 1 ? 'active' : ''))
+                                        a.page-link(href='#') #{page + 1}
+                                li.page-item.next(class=(currentPage === totalPages ? 'disabled' : ''))
+                                    a.page-link(href='#') Next
                     #payments.tab-pane(role='tabpanel')
                         table.table
                             thead
                                 tr
-                                    th(scope='col') #id
-                                    th(scope='col') #user_id
-                                    th(scope='col') #tour_id
-                                    th(scope='col') Thời gian
+                                    th(scope='col') #
+                                    th(scope='col') Tên người dùng
+                                    th(scope='col') Tên chuyến đi
+                                    th(scope='col') Ngày thanh toán
                                     th(scope='col') Giá
+                                    th(scope='col') Trạng thái thanh toán
                                     th(scope='col') Xem
                                     th(scope='col') Sửa
                                     th(scope='col') Xóa
 
                             tbody
-                                tr
-                                    th(scope='row') 1
-                                    td Mark
-                                    td Otto
-                                    td @mdo
-                                    td 123
-                                    td
-                                        i.fa-regular.fa-eye
-                                    td
-                                        i.fa-regular.fa-pen-to-square
-                                    td
-                                        i.fa-regular.fa-trash-can
-                                tr
-                                    th(scope='row') 2
-                                    td Jacob
-                                    td Thornton
-                                    td @fat
-                                    td 123
-                                    td
-                                        i.fa-regular.fa-eye
-                                    td
-                                        i.fa-regular.fa-pen-to-square
-                                    td
-                                        i.fa-regular.fa-trash-can
-                                tr
-                                    th(scope='row') 3
-                                    td(colspan='2') Larry the Bird
-                                    td @twitter
-                                    td 123
-                                    td
-                                        i.fa-regular.fa-eye
-                                    td
-                                        i.fa-regular.fa-pen-to-square
-                                    td
-                                        i.fa-regular.fa-trash-can
-
-                                tr
-                                    th(scope='row') 1
-                                    td Mark
-                                    td Otto
-                                    td @mdo
-                                    td 123
-                                    td
-                                        i.fa-regular.fa-eye
-                                    td
-                                        i.fa-regular.fa-pen-to-square
-                                    td
-                                        i.fa-regular.fa-trash-can
-                                tr
-                                    th(scope='row') 2
-                                    td Jacob
-                                    td Thornton
-                                    td @fat
-                                    td 123
-                                    td
-                                        i.fa-regular.fa-eye
-                                    td
-                                        i.fa-regular.fa-pen-to-square
-                                    td
-                                        i.fa-regular.fa-trash-can
-                                tr
-                                    th(scope='row') 3
-                                    td(colspan='2') Larry the Bird
-                                    td @twitter
-                                    td 123
-                                    td
-                                        i.fa-regular.fa-eye
-                                    td
-                                        i.fa-regular.fa-pen-to-square
-                                    td
-                                        i.fa-regular.fa-trash-can
+                               
 
                         nav(aria-label='Page navigation example')
                             ul.pagination.justify-content-center
@@ -459,54 +199,14 @@ html(lang='vi')
                         table.table
                             thead
                                 tr
-                                    th(scope='col') #id
+                                    th(scope='col') #
                                     th(scope='col') Tên
                                     th(scope='col') Email
                                     th(scope='col') Thời gian
                                     th(scope='col') Xóa
 
                             tbody
-                                tr
-                                    th(scope='row') 1
-                                    td Mark
-                                    td Otto
-                                    td @mdo
-                                    td
-                                        i.fa-regular.fa-trash-can
-                                tr
-                                    th(scope='row') 2
-                                    td Jacob
-                                    td Thornton
-                                    td @fat
-                                    td
-                                        i.fa-regular.fa-trash-can
-                                tr
-                                    th(scope='row') 3
-                                    td(colspan='2') Larry the Bird
-                                    td @twitter
-                                    td
-                                        i.fa-regular.fa-trash-can
-
-                                tr
-                                    th(scope='row') 1
-                                    td Mark
-                                    td Otto
-                                    td @mdo
-                                    td
-                                        i.fa-regular.fa-trash-can
-                                tr
-                                    th(scope='row') 2
-                                    td Jacob
-                                    td Thornton
-                                    td @fat
-                                    td
-                                        i.fa-regular.fa-trash-can
-                                tr
-                                    th(scope='row') 3
-                                    td(colspan='2') Larry the Bird
-                                    td @twitter
-                                    td
-                                        i.fa-regular.fa-trash-can
+                               
 
                         nav(aria-label='Page navigation example')
                             ul.pagination.justify-content-center
@@ -522,3 +222,6 @@ html(lang='vi')
                                 a.page-link(href='#') Next      
 
         script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js', integrity='sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM', crossorigin='anonymous')
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js')
+        script(src='/script/logout.js') 
+        script(src='/script/pagination.js')
