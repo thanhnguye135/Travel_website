@@ -9,7 +9,7 @@ const logout = async () => {
 
     if ((res.data.status = 'success')) location.assign('/overview');
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     alert('error', 'Error logging out! Try again.');
   }
 };

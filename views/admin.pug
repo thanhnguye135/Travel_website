@@ -45,6 +45,14 @@ mixin reviewRow(index, user_name, tour_name, review, rating, creatAt)
     td
       i.fa-regular.fa-trash-can
 
+mixin emailRow(index, name, email, createdAt)
+  tr
+    th(scope='row') #{index}
+    td #{name}
+    td #{email}
+    td #{createdAt}
+    td
+      i.fa-regular.fa-trash-can
 
 doctype html 
 html(lang='vi')
@@ -70,8 +78,8 @@ html(lang='vi')
                 a.nav__el(href='#')
                     img.nav__user-img(src=`/img/users/${user.photo}`, alt=`This is photo of ${user.name}`)
                     span=user.name.split(' ')[0]
-        main
-            div.d-flex.p-0.h-100(role='tabpanel')
+        main.h-100
+            div.d-flex.p-0(role='tabpanel')
     
                 #myList.list-group.h-auto.w-50.side-nav.user-view__menu(role='tablist')
                     a.list-group-item.list-group-item-action.h-20(data-bs-toggle='list', href='#users', role='tab') Người dùng
@@ -101,10 +109,10 @@ html(lang='vi')
                             ul.pagination.justify-content-center
                                 li.page-item.previous(class=(currentPage === 1 ? 'disabled' : ''))
                                     a.page-link(href='#', tabindex='-1', aria-disabled=(currentPage === 1 ? 'true' : 'false')) Previous
-                                each page in Array.from(Array(totalPages).keys())
+                                each page in Array.from(Array(totalUsersPages).keys())
                                     li.page-item(class=(currentPage === page + 1 ? 'active' : ''))
-                                        a.page-link(href='#') #{page + 1}
-                                li.page-item.next(class=(currentPage === totalPages ? 'disabled' : ''))
+                                    a.page-link(href='#') #{page + 1}
+                                li.page-item.next(class=(currentPage === totalUsersPages ? 'disabled' : ''))
                                     a.page-link(href='#') Next
                     #tours.tab-pane(role='tabpanel')
                         table.table
@@ -129,16 +137,13 @@ html(lang='vi')
 
                         nav(aria-label='Page navigation example')
                             ul.pagination.justify-content-center
-                                li.page-item.disabled
-                                a.page-link(href='#', tabindex='-1', aria-disabled='true') Previous
-                                li.page-item
-                                a.page-link(href='#') 1
-                                li.page-item
-                                a.page-link(href='#') 2
-                                li.page-item
-                                a.page-link(href='#') 3
-                                li.page-item
-                                a.page-link(href='#') Next      
+                                li.page-item.previous(class=(currentPage === 1 ? 'disabled' : ''))
+                                    a.page-link(href='#', tabindex='-1', aria-disabled=(currentPage === 1 ? 'true' : 'false')) Previous
+                                each page in Array.from(Array(totalToursPages).keys())
+                                    li.page-item(class=(currentPage === page + 1 ? 'active' : ''))
+                                    a.page-link(href='#') #{page + 1}
+                                li.page-item.next(class=(currentPage === totalToursPages ? 'disabled' : ''))
+                                    a.page-link(href='#') Next
                     #reviews.tab-pane(role='tabpanel')
                         table.table
                             thead
@@ -158,14 +163,15 @@ html(lang='vi')
                                     +reviewRow(i + 1, review.user.name, review.tour.name, review.review, review.rating, review.creatAt.toLocaleDateString('en-GB').replace(/\//g, '-'))
 
                         nav(aria-label='Page navigation example')
-                            ul.pagination.justify-content-center
-                                li.page-item.previous(class=(currentPage === 1 ? 'disabled' : ''))
-                                    a.page-link(href='#', tabindex='-1', aria-disabled=(currentPage === 1 ? 'true' : 'false')) Previous
-                                each page in Array.from(Array(totalPages).keys())
-                                    li.page-item(class=(currentPage === page + 1 ? 'active' : ''))
-                                        a.page-link(href='#') #{page + 1}
-                                li.page-item.next(class=(currentPage === totalPages ? 'disabled' : ''))
-                                    a.page-link(href='#') Next
+                          ul.pagination.justify-content-center
+                            li.page-item.previous(class=(currentPage === 1 ? 'disabled' : ''))
+                                a.page-link(href='#', tabindex='-1', aria-disabled=(currentPage === 1 ? 'true' : 'false')) Previous
+                            each page in Array.from(Array(totalReviewsPages).keys())
+                                li.page-item(class=(currentPage === page + 1 ? 'active' : ''))
+                                a.page-link(href='#') #{page + 1}
+                            li.page-item.next(class=(currentPage === totalReviewsPages ? 'disabled' : ''))
+                                a.page-link(href='#') Next
+
                     #payments.tab-pane(role='tabpanel')
                         table.table
                             thead
@@ -184,17 +190,14 @@ html(lang='vi')
                                
 
                         nav(aria-label='Page navigation example')
-                            ul.pagination.justify-content-center
-                                li.page-item.disabled
-                                a.page-link(href='#', tabindex='-1', aria-disabled='true') Previous
-                                li.page-item
-                                a.page-link(href='#') 1
-                                li.page-item
-                                a.page-link(href='#') 2
-                                li.page-item
-                                a.page-link(href='#') 3
-                                li.page-item
-                                a.page-link(href='#') Next      
+                          ul.pagination.justify-content-center
+                            li.page-item.previous(class=(currentPage === 1 ? 'disabled' : ''))
+                                a.page-link(href='#', tabindex='-1', aria-disabled=(currentPage === 1 ? 'true' : 'false')) Previous
+                            each page in Array.from(Array(totalUsersPages).keys())
+                                li.page-item(class=(currentPage === page + 1 ? 'active' : ''))
+                                a.page-link(href='#') #{page + 1}
+                            li.page-item.next(class=(currentPage === totalUsersPages ? 'disabled' : ''))
+                                a.page-link(href='#') Next
                     #emails.tab-pane(role='tabpanel')
                         table.table
                             thead
@@ -206,22 +209,34 @@ html(lang='vi')
                                     th(scope='col') Xóa
 
                             tbody
-                               
+                                each email, i in emails
+                                    +emailRow(i + 1, email.name, email.email, email.createdAt.toLocaleDateString('en-GB').replace(/\//g, '-'))
 
                         nav(aria-label='Page navigation example')
                             ul.pagination.justify-content-center
-                                li.page-item.disabled
-                                a.page-link(href='#', tabindex='-1', aria-disabled='true') Previous
-                                li.page-item
-                                a.page-link(href='#') 1
-                                li.page-item
-                                a.page-link(href='#') 2
-                                li.page-item
-                                a.page-link(href='#') 3
-                                li.page-item
-                                a.page-link(href='#') Next      
+                                li.page-item.previous(class=(currentPage === 1 ? 'disabled' : ''))
+                                    a.page-link(href='#', tabindex='-1', aria-disabled=(currentPage === 1 ? 'true' : 'false')) Previous
+                                each page in Array.from(Array(totalEmailsPages).keys())
+                                    li.page-item(class=(currentPage === page + 1 ? 'active' : ''))
+                                    a.page-link(href='#') #{page + 1}
+                                li.page-item.next(class=(currentPage === totalEmailsPages ? 'disabled' : ''))
+                                    a.page-link(href='#') Next
 
         script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js', integrity='sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM', crossorigin='anonymous')
         script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js')
         script(src='/script/logout.js') 
         script(src='/script/pagination.js')
+        script.
+            document.addEventListener('DOMContentLoaded', function () {
+                const rowsPerPage = 10; // Number of rows per page
+                const tabPanes = document.querySelectorAll('.tab-pane');
+
+                tabPanes.forEach(tabPane => {
+                const rows = tabPane.querySelectorAll('tbody tr');
+                rows.forEach((row, index) => {
+                    if (index >= rowsPerPage) {
+                    row.style.display = 'none';
+                    }
+                });
+                });
+            });

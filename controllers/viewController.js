@@ -2,6 +2,7 @@ const Tour = require('../models/tourModel');
 const User = require('../models/userModel');
 const Review = require('../models/reviewModel');
 const BookingTour = require('../models/bookingModel');
+const BookingEmail = require('../models/bookingEmailModel');
 const AppError = require('../utils/appError');
 const catchingErrorAsync = require('../utils/catchingErrorAsync');
 
@@ -34,12 +35,54 @@ exports.getAdmin = catchingErrorAsync(async (req, res, next) => {
   const users = await User.find();
   const reviews = await Review.find();
   const bookings = await BookingTour.find();
+  const emails = await BookingEmail.find();
 
-  res.status(200).render('admin', { user, tours, users, reviews, bookings });
+  const rowsPerPage = 10;
+
+  const totalUsersPages = Math.ceil(users.length / rowsPerPage);
+  const totalToursPages = Math.ceil(tours.length / rowsPerPage);
+  const totalReviewsPages = Math.ceil(reviews.length / rowsPerPage);
+  const totalBookingsPages = Math.ceil(bookings.length / rowsPerPage);
+  const totalEmailsPages = Math.ceil(emails.length / rowsPerPage);
+
+  res.status(200).render('admin', {
+    user,
+    tours,
+    users,
+    reviews,
+    bookings,
+    emails,
+    totalUsersPages,
+    totalToursPages,
+    totalReviewsPages,
+    totalBookingsPages,
+    totalEmailsPages,
+    currentPage: 1,
+  });
 });
 
-exports.getTravel = (req, res) => {
-  res.status(200).render('travel');
+exports.getTravel = async (req, res) => {
+  const topTours = await Tour.aggregate([
+    {
+      $match: { ratingsAverage: { $gte: 4.5 } },
+    },
+    {
+      $sort: { ratingsAverage: -1, price: 1 },
+    },
+    {
+      $limit: 3,
+    },
+    // {
+    //   $project: {
+    //     name: 1,
+    //     ratingsAverage: 1,
+    //     price: 1,
+    //     ratingsQuantity: 1,
+    //     difficulty: 1,
+    //   },
+    // },
+  ]);
+  res.status(200).render('travel', { topTours });
 };
 
 exports.getOverview = catchingErrorAsync(async (req, res, next) => {
