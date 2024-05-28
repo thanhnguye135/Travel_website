@@ -1,4 +1,4 @@
-mixin userRow(index, name, photo, email, role)
+mixin userRow(index, id, name, photo, email, role)
   tr
     th(scope='row') #{index}
     td #{name}
@@ -7,13 +7,17 @@ mixin userRow(index, name, photo, email, role)
     td #{email}
     td #{role}
     td
-      i.fa-regular.fa-eye
+      a.btn-view(href='#', data-id=id)
+        i.fa-regular.fa-eye
     td
-      i.fa-regular.fa-pen-to-square
+      a.btn-edit(href='#', data-id=id)
+        i.fa-regular.fa-pen-to-square
     td
-      i.fa-regular.fa-trash-can
+      a.btn-delete(href='#', data-id=id)
+        i.fa-regular.fa-trash-can
 
-mixin tourRow(index, name, duration, maxGroupSize, difficulty, ratingsAverage, ratingsQuantity, startDates)
+
+mixin tourRow(index, id, name, duration, maxGroupSize, difficulty, ratingsAverage, ratingsQuantity, startDates)
   tr
     th(scope='row') #{index}
     td #{name}
@@ -24,11 +28,14 @@ mixin tourRow(index, name, duration, maxGroupSize, difficulty, ratingsAverage, r
     td #{ratingsQuantity}
     td #{startDates}
     td
-      i.fa-regular.fa-eye
+      a.btn-view(href='#', data-id=id)
+        i.fa-regular.fa-eye
     td
-      i.fa-regular.fa-pen-to-square
+      a.btn-edit(href='#', data-id=id)
+        i.fa-regular.fa-pen-to-square
     td
-      i.fa-regular.fa-trash-can
+      a.btn-delete(href='#', data-id=id)
+        i.fa-regular.fa-trash-can
 
 mixin reviewRow(index, user_name, tour_name, review, rating, creatAt)
   tr
@@ -103,7 +110,7 @@ html(lang='vi')
 
                             tbody
                                 each user, i in users
-                                    +userRow(i + 1, user.name, user.photo, user.email, user.role)
+                                    +userRow(i + 1, user._id, user.name, user.photo, user.email, user.role)
 
                         nav(aria-label='Page navigation example')
                             ul.pagination.justify-content-center
@@ -133,7 +140,7 @@ html(lang='vi')
 
                             tbody
                                 each tour, i in tours
-                                    +tourRow(i + 1, tour.name, tour.duration, tour.maxGroupSize, tour.difficulty, tour.ratingsAverage, tour.ratingsQuantity, tour.startDates[0].toLocaleDateString('en-GB').replace(/\//g, '-'))
+                                    +tourRow(i + 1, tour._id, tour.name, tour.duration, tour.maxGroupSize, tour.difficulty, tour.ratingsAverage, tour.ratingsQuantity, tour.startDates[0].toLocaleDateString('en-GB').replace(/\//g, '-'))
 
                         nav(aria-label='Page navigation example')
                             ul.pagination.justify-content-center
@@ -222,10 +229,95 @@ html(lang='vi')
                                 li.page-item.next(class=(currentPage === totalEmailsPages ? 'disabled' : ''))
                                     a.page-link(href='#') Next
 
+            div.modal.fade(id='userModal', tabindex='-1', aria-labelledby='userModalLabel', aria-hidden='true')
+                div.modal-dialog
+                    div.modal-content
+                        div.modal-header
+                            h5.modal-title(id='userModalLabel') User Details
+                            button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
+                        div.modal-body
+                            p
+                            strong Name:
+                            span#userName
+                            p
+                            strong Email:
+                            span#userEmail
+                            p
+                            strong Photo:
+                            span#userPhoto
+                            p
+                            strong Role:
+                            span#userRole
+                            p
+                            strong Active:
+                            span#userActive
+                            // Add other user details as needed
+                        div.modal-footer
+                            button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Close       
+            // Button to trigger modal
+            button.btn.btn-primary(data-bs-toggle='modal', data-bs-target='#tourModal') View More Details
+
+            // Modal structure
+            div.modal.fade(id='tourModal', tabindex='-1', aria-labelledby='tourModalLabel', aria-hidden='true')
+                div.modal-dialog
+                    div.modal-content
+                        div.modal-header
+                            h5.modal-title(id='tourModalLabel') More Details About Tour
+                            button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
+                        div.modal-body
+                            p
+                                strong Name:
+                                span#tourName
+                            p
+                                strong Duration:
+                                span#tourDuration
+                            p
+                                strong Max Group Size:
+                                span#tourMaxGroupSize
+                            p
+                                strong Difficulty:
+                                span#tourDifficulty
+                            p
+                                strong Ratings Average:
+                                span#tourRatingsAverage
+                            p
+                                strong Ratings Quantity:
+                                span#tourRatingsQuantity
+                            p
+                                strong Price:
+                                span#tourPrice
+                            p
+                                strong Summary:
+                                span#tourSummary
+                            p
+                                strong Description:
+                                span#tourDescription
+                            p
+                                strong Image Cover:
+                                span#tourImageCover
+                            p
+                                strong Images:
+                                span#tourImages
+                            p
+                                strong Start Dates:
+                                span#tourStartDates
+                            p
+                                strong Start Location:
+                                span#tourStartLocation
+                            p
+                                strong Locations:
+                                span#tourLocations
+                            p
+                                strong Guides:
+                                span#tourGuides
+                        div.modal-footer
+                            button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Close                       
+
         script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js', integrity='sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM', crossorigin='anonymous')
         script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js')
         script(src='/script/logout.js') 
         script(src='/script/pagination.js')
+        script(src="/script/edit.js") 
         script.
             document.addEventListener('DOMContentLoaded', function () {
                 const rowsPerPage = 10; // Number of rows per page
