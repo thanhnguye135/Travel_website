@@ -21,6 +21,24 @@ exports.getAllReviews = catchingErrorAsync(async (req, res, next) => {
   });
 });
 
+exports.getReview = catchingErrorAsync(async (req, res, next) => {
+  const review = await Review.findById(req.params.id);
+  // console.log(review);
+
+  if (!review) {
+    return next(
+      new AppError('Không có chuyến đi nào được tìm thấy với id này', 404)
+    );
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      review,
+    },
+  });
+});
+
 exports.createReview = catchingErrorAsync(async (req, res, next) => {
   if (!req.body.tour) req.body.tour = req.params.tourId;
   if (!req.body.user) req.body.user = req.user.id;
@@ -32,5 +50,50 @@ exports.createReview = catchingErrorAsync(async (req, res, next) => {
     data: {
       review: newReview,
     },
+  });
+});
+
+exports.deleteReviewTour = catchingErrorAsync(async (req, res, next) => {
+  const id = req.params.id;
+  const doc = await Review.deleteMany({ tour: id });
+  // console.log(doc.deletedCount);
+  if (!doc) {
+    return next(
+      new AppError('Không tài liệu nào được tìm thấy với id này', 404)
+    );
+  }
+  res.status(204).json({
+    status: 'success',
+    data: null,
+  });
+});
+
+exports.deleteReviewUser = catchingErrorAsync(async (req, res, next) => {
+  const id = req.params.id;
+  const doc = await Review.deleteMany({ user: id });
+  // console.log(doc.deletedCount);
+  if (!doc) {
+    return next(
+      new AppError('Không tài liệu nào được tìm thấy với id này', 404)
+    );
+  }
+  res.status(204).json({
+    status: 'success',
+    data: null,
+  });
+});
+
+exports.deleteReview = catchingErrorAsync(async (req, res, next) => {
+  const id = req.params.id;
+  const doc = await Review.findByIdAndDelete(id);
+  // console.log(doc.deletedCount);
+  if (!doc) {
+    return next(
+      new AppError('Không tài liệu nào được tìm thấy với id này', 404)
+    );
+  }
+  res.status(204).json({
+    status: 'success',
+    data: null,
   });
 });

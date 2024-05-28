@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const response = await axios({
       method: 'POST',
-      url: '/api/v1/booking-email',
+      url: '/api/v1/emails/booking-email',
       data: {
         name,
         email,

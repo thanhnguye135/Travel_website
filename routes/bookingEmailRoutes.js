@@ -7,4 +7,8 @@ bookingEmailRouter
   .route('/booking-email')
   .post(bookingEmailController.createBookingEmail);
 
+bookingEmailRouter
+  .route('/:id')
+  .delete(bookingEmailController.deleteBookingEmail);
+
 module.exports = bookingEmailRouter;

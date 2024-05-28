@@ -7,13 +7,13 @@ mixin userRow(index, id, name, photo, email, role)
     td #{email}
     td #{role}
     td
-      a.btn-view(href='#', data-id=id)
+      a.btn-view-user(href='#', data-id=id)
         i.fa-regular.fa-eye
     td
-      a.btn-edit(href='#', data-id=id)
+      a.btn-edit-user(href='#', data-id=id)
         i.fa-regular.fa-pen-to-square
     td
-      a.btn-delete(href='#', data-id=id)
+      a.btn-delete-user(href='#', data-id=id)
         i.fa-regular.fa-trash-can
 
 
@@ -28,16 +28,16 @@ mixin tourRow(index, id, name, duration, maxGroupSize, difficulty, ratingsAverag
     td #{ratingsQuantity}
     td #{startDates}
     td
-      a.btn-view(href='#', data-id=id)
+      a.btn-view-tour(href='#', data-id=id)
         i.fa-regular.fa-eye
     td
-      a.btn-edit(href='#', data-id=id)
+      a.btn-edit-tour(href='#', data-id=id)
         i.fa-regular.fa-pen-to-square
     td
-      a.btn-delete(href='#', data-id=id)
+      a.btn-delete-tour(href='#', data-id=id)
         i.fa-regular.fa-trash-can
 
-mixin reviewRow(index, user_name, tour_name, review, rating, creatAt)
+mixin reviewRow(index, id, user_name, tour_name, review, rating, creatAt)
   tr
     th(scope='row') #{index}
     td #{user_name}
@@ -46,20 +46,24 @@ mixin reviewRow(index, user_name, tour_name, review, rating, creatAt)
     td #{rating}
     td #{creatAt}
     td
-      i.fa-regular.fa-eye
+      a.btn-view-review(href='#', data-id=id)
+        i.fa-regular.fa-eye
     td
-      i.fa-regular.fa-pen-to-square
+      a.btn-edit-review(href='#', data-id=id)
+        i.fa-regular.fa-pen-to-square
     td
-      i.fa-regular.fa-trash-can
+      a.btn-delete-review(href='#', data-id=id)
+        i.fa-regular.fa-trash-can
 
-mixin emailRow(index, name, email, createdAt)
+mixin emailRow(index, id, name, email, createdAt)
   tr
     th(scope='row') #{index}
     td #{name}
     td #{email}
     td #{createdAt}
     td
-      i.fa-regular.fa-trash-can
+      a.btn-delete-email(href='#', data-id=id)
+        i.fa-regular.fa-trash-can
 
 doctype html 
 html(lang='vi')
@@ -167,7 +171,7 @@ html(lang='vi')
 
                             tbody
                                 each review, i in reviews
-                                    +reviewRow(i + 1, review.user.name, review.tour.name, review.review, review.rating, review.creatAt.toLocaleDateString('en-GB').replace(/\//g, '-'))
+                                    +reviewRow(i + 1, review._id, review.user.name, review.tour.name, review.review, review.rating, review.creatAt.toLocaleDateString('en-GB').replace(/\//g, '-'))
 
                         nav(aria-label='Page navigation example')
                           ul.pagination.justify-content-center
@@ -217,7 +221,7 @@ html(lang='vi')
 
                             tbody
                                 each email, i in emails
-                                    +emailRow(i + 1, email.name, email.email, email.createdAt.toLocaleDateString('en-GB').replace(/\//g, '-'))
+                                    +emailRow(i + 1, email._id, email.name, email.email, email.createdAt.toLocaleDateString('en-GB').replace(/\//g, '-'))
 
                         nav(aria-label='Page navigation example')
                             ul.pagination.justify-content-center
@@ -254,10 +258,8 @@ html(lang='vi')
                             // Add other user details as needed
                         div.modal-footer
                             button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Close       
-            // Button to trigger modal
-            button.btn.btn-primary(data-bs-toggle='modal', data-bs-target='#tourModal') View More Details
 
-            // Modal structure
+ 
             div.modal.fade(id='tourModal', tabindex='-1', aria-labelledby='tourModalLabel', aria-hidden='true')
                 div.modal-dialog
                     div.modal-content
@@ -312,6 +314,59 @@ html(lang='vi')
                                 span#tourGuides
                         div.modal-footer
                             button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Close                       
+
+            div.modal.fade(id='reviewModal', tabindex='-1', aria-labelledby='reviewModalLabel', aria-hidden='true')
+                div.modal-dialog
+                    div.modal-content
+                        div.modal-header
+                            h5.modal-title(id='reviewModalLabel') Review Details
+                            button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
+                        div.modal-body
+                            p
+                            strong Review:
+                            span#reviewUserName
+                            p
+                            strong Review:
+                            span#reviewTourName
+                            p
+                            strong Review:
+                            span#reviewText
+                            p
+                            strong Rating:
+                            span#reviewRating
+                            p
+                            strong Created At:
+                            span#reviewCreatedAt
+                            // Add other review details as needed
+                        div.modal-footer
+                            button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Close
+
+            div.modal.fade#editUserModal(tabindex='-1', aria-labelledby='editUserModalLabel', aria-hidden='true')
+                div.modal-dialog
+                    div.modal-content
+                        div.modal-header
+                            h5.modal-title#editUserModalLabel Update User
+                            button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
+                        div.modal-body
+                            form#editUserForm.form-user-update
+                            .form-group
+                                label(for='editName') Name:
+                                input#editName.form-control(type='text', name='name')
+                            .form-group
+                                label(for='editEmail') Email:
+                                input#editEmail.form-control(type='email', name='email')
+                            .form-group
+                                label(for='editRole') Role:
+                                input#editRole.form-control(type='text', name='role')
+                            .form-group
+                                label(for='editActive') Active:
+                                input#editActive.form-control(type='text', name='active')
+                        div.modal-footer
+                            button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Close
+                            button.btn.btn-primary(type='submit') Save Changes
+
+
+
 
         script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js', integrity='sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM', crossorigin='anonymous')
         script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js')
