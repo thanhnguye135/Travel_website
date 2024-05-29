@@ -72,6 +72,7 @@ exports.getTour = catchingErrorAsync(async (req, res, next) => {
   const tour = await Tour.findById(req.params.id).populate('reviews');
   // Tour.findOne({ _id: req.params.id })
 
+  // console.log(tour);
   if (!tour) {
     return next(
       new AppError('Không có chuyến đi nào được tìm thấy với id này', 404)

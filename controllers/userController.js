@@ -124,7 +124,10 @@ exports.createUser = (req, res) => {
 };
 
 exports.updateUser = catchingErrorAsync(async (req, res, next) => {
-  const doc = await User.findByIdAndUpdate(req.params.id, req.body, {
+  const filterBody = filterObj(req.body, 'name', 'email', 'role', 'active');
+  if (req.file) filterBody.photo = req.file.filename;
+
+  const doc = await User.findByIdAndUpdate(req.params.id, filterBody, {
     new: true,
     runValidators: true,
   });
@@ -133,6 +136,7 @@ exports.updateUser = catchingErrorAsync(async (req, res, next) => {
       new AppError('Không tài liệu nào được tìm thấy với id này', 404)
     );
   }
+  // console.log(doc);
   res.status(200).json({
     status: 'success',
     data: {
