@@ -27,7 +27,7 @@ exports.getReview = catchingErrorAsync(async (req, res, next) => {
 
   if (!review) {
     return next(
-      new AppError('Không có chuyến đi nào được tìm thấy với id này', 404)
+      new AppError('Không có bài đánh giá nào được tìm thấy với id này', 404)
     );
   }
 
@@ -53,13 +53,33 @@ exports.createReview = catchingErrorAsync(async (req, res, next) => {
   });
 });
 
+exports.updateReview = catchingErrorAsync(async (req, res, next) => {
+  const review = await Review.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  if (!review) {
+    return next(
+      new AppError('Không có đánh giá nào được tìm thấy với id này', 404)
+    );
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      review,
+    },
+  });
+});
+
 exports.deleteReviewTour = catchingErrorAsync(async (req, res, next) => {
   const id = req.params.id;
   const doc = await Review.deleteMany({ tour: id });
   // console.log(doc.deletedCount);
   if (!doc) {
     return next(
-      new AppError('Không tài liệu nào được tìm thấy với id này', 404)
+      new AppError('Không đánh giá nào được tìm thấy với id này', 404)
     );
   }
   res.status(204).json({
@@ -74,7 +94,7 @@ exports.deleteReviewUser = catchingErrorAsync(async (req, res, next) => {
   // console.log(doc.deletedCount);
   if (!doc) {
     return next(
-      new AppError('Không tài liệu nào được tìm thấy với id này', 404)
+      new AppError('Không đánh giá nào được tìm thấy với id này', 404)
     );
   }
   res.status(204).json({
@@ -89,7 +109,7 @@ exports.deleteReview = catchingErrorAsync(async (req, res, next) => {
   // console.log(doc.deletedCount);
   if (!doc) {
     return next(
-      new AppError('Không tài liệu nào được tìm thấy với id này', 404)
+      new AppError('Không đánh giá nào được tìm thấy với id này', 404)
     );
   }
   res.status(204).json({

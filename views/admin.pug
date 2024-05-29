@@ -16,7 +16,6 @@ mixin userRow(index, id, name, photo, email, role)
       a.btn-delete-user(href='#', data-id=id)
         i.fa-regular.fa-trash-can
 
-
 mixin tourRow(index, id, name, duration, maxGroupSize, difficulty, ratingsAverage, ratingsQuantity, startDates)
   tr
     th(scope='row') #{index}
@@ -240,198 +239,218 @@ html(lang='vi')
                 div.modal-dialog
                     div.modal-content
                         div.modal-header
-                            h5.modal-title(id='userModalLabel') User Details
+                            h5.modal-title(id='userModalLabel') Thông tin người dùng chi tiết
                             button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
                         div.modal-body
                             p
-                            strong Name:
+                            strong Tên người dùng:
                             span#userName
                             p
-                            strong Email:
+                            strong Địa chỉ Email:
                             span#userEmail
                             p
-                            strong Photo:
+                            strong Ảnh:
                             span#userPhoto
                             p
-                            strong Role:
+                            strong Vai trò:
                             span#userRole
                             p
-                            strong Active:
+                            strong Hoạt động:
                             span#userActive
                             // Add other user details as needed
                         div.modal-footer
-                            button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Close       
+                            button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Đóng    
 
             div.modal.fade(id='tourModal', tabindex='-1', aria-labelledby='tourModalLabel', aria-hidden='true')
                 div.modal-dialog
                     div.modal-content
                         div.modal-header
-                            h5.modal-title(id='tourModalLabel') More Details About Tour
+                            h5.modal-title(id='tourModalLabel') Thông tin chi tiết về chuyến đi
                             button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
                         div.modal-body
                             p
-                                strong Name:
+                                strong Tên chuyến đi:
                                 span#tourName
                             p
-                                strong Duration:
+                                strong Thời gian chuyến đi:
                                 span#tourDuration
                             p
-                                strong Max Group Size:
+                                strong Số lượng người tối đa:
                                 span#tourMaxGroupSize
                             p
-                                strong Difficulty:
+                                strong Độ khó:
                                 span#tourDifficulty
                             p
-                                strong Ratings Average:
+                                strong Đánh giá trung bình:
                                 span#tourRatingsAverage
                             p
-                                strong Ratings Quantity:
+                                strong Số lượng lượt đánh giá:
                                 span#tourRatingsQuantity
                             p
-                                strong Price:
+                                strong Giá:
                                 span#tourPrice
                             p
-                                strong Summary:
+                                strong Tóm tắt:
                                 span#tourSummary
                             p
-                                strong Description:
+                                strong Mô tả chi tiết:
                                 span#tourDescription
                             p
-                                strong Image Cover:
+                                strong Ảnh đại diện:
                                 span#tourImageCover
                             p
-                                strong Images:
+                                strong Ảnh thực tế:
                                 span#tourImages
                             p
-                                strong Start Dates:
+                                strong Ngày khởi hành:
                                 span#tourStartDates
                             p
-                                strong Start Location:
+                                strong Địa điểm khởi hành:
                                 span#tourStartLocation
                             p
-                                strong Locations:
+                                strong Địa điểm dừng chân:
                                 span#tourLocations
                             p
-                                strong Guides:
+                                strong Hướng dẫn viên:
                                 span#tourGuides
                         div.modal-footer
-                            button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Close                       
+                            button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Đóng                    
 
             div.modal.fade(id='reviewModal', tabindex='-1', aria-labelledby='reviewModalLabel', aria-hidden='true')
                 div.modal-dialog
                     div.modal-content
                         div.modal-header
-                            h5.modal-title(id='reviewModalLabel') Review Details
+                            h5.modal-title(id='reviewModalLabel') Bài đánh giá chi tiết
                             button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
                         div.modal-body
                             p
-                            strong Review:
+                            strong Tên người dùng:
                             span#reviewUserName
                             p
-                            strong Review:
+                            strong Tên chuyến đi:
                             span#reviewTourName
                             p
-                            strong Review:
+                            strong Đánh giá:
                             span#reviewText
                             p
-                            strong Rating:
+                            strong Sao đánh giá:
                             span#reviewRating
                             p
-                            strong Created At:
+                            strong Ngày tạo:
                             span#reviewCreatedAt
                             // Add other review details as needed
                         div.modal-footer
-                            button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Close
+                            button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Đóng
 
             div.modal.fade#editUserModal(tabindex='-1', aria-labelledby='editUserModalLabel', aria-hidden='true')
                 div.modal-dialog
                     div.modal-content
                         div.modal-header
-                            h5.modal-title#editUserModalLabel Update User
+                            h5.modal-title#editUserModalLabel Cập nhật thông tin người dùng
                             button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
                         div.modal-body
                             form#editUserForm.form-user-update
                                 .form-group
-                                    label(for='editName') Name:
+                                    label(for='editName') Tên người dùng:
                                     input#editName.form-control(type='text', name='name')
                                 .form-group
-                                    label(for='editEmail') Email:
+                                    label(for='editEmail') Địa chỉ Email:
                                     input#editEmail.form-control(type='email', name='email')
                                 .form-group
-                                    label(for='editPhoto') Photo:
+                                    label(for='editPhoto') Ảnh:
                                     input#editPhoto.form-control(type='file', name='photo')
                                 .form-group
-                                    label(for='editRole') Role:
+                                    label(for='editRole') Vai trò:
                                     select#editRole.form-select(name='role')
                                         option(value='admin') Admin
+                                        option(value='guide') Guide
                                         option(value='user') User
                                 .form-group
-                                    label(for='editActive') Active:
+                                    label(for='editActive') Hoạt động:
                                     select#editActive.form-select(name='active')
-                                        option(value='true') Dang hoat dong
-                                        option(value='false') Khong hoat dong
+                                        option(value='true') Đang hoạt động
+                                        option(value='false') Không hoạt động
                                 div.modal-footer
-                                    button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Close
-                                    button.btn.btn-primary(type='submit') Save Changes
+                                    button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Đóng
+                                    button.btn.btn-primary(type='submit') Cập nhật
 
             div.modal.fade#editTourModal(tabindex='-1', aria-labelledby='editTourModalLabel', aria-hidden='true')
                 div.modal-dialog
                     div.modal-content
                         div.modal-header
-                            h5.modal-title#editTourModalLabel Update Tour
+                            h5.modal-title#editTourModalLabel Cập nhật thông tin chuyến đi
                             button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
                         div.modal-body
                             form#editTourForm.form-tour-update
                                 .form-group
-                                    label(for='editTourName') Name:
+                                    label(for='editTourName') Tên chuyến đi:
                                     input#editTourName.form-control(type='text', name='name', required)
                                 .form-group
-                                    label(for='editDuration') Duration:
+                                    label(for='editDuration') Thời gian chuyến đi:
                                     input#editDuration.form-control(type='number', name='duration', required)
                                 .form-group
-                                    label(for='editMaxGroupSize') Max Group Size:
+                                    label(for='editMaxGroupSize') Số lượng người tối đa:
                                     input#editMaxGroupSize.form-control(type='number', name='maxGroupSize', required)
                                 .form-group
-                                    label(for='editDifficulty') Difficulty:
+                                    label(for='editDifficulty') Độ khó:
                                     select#editDifficulty.form-select(name='difficulty')
                                         option(value='easy') Dễ
                                         option(value='medium') Trung bình
                                         option(value='difficult') Khó
                                 .form-group
-                                    label(for='editRatingsAverage') Ratings Average:
+                                    label(for='editRatingsAverage') Đánh giá trung bình:
                                     input#editRatingsAverage.form-control(type='number', step='0.1', name='ratingsAverage', required)
                                 .form-group
-                                    label(for='editRatingsQuantity') Ratings Quantity:
+                                    label(for='editRatingsQuantity') Số lượng lượt đánh giá:
                                     input#editRatingsQuantity.form-control(type='number', name='ratingsQuantity', required)
                                 .form-group
-                                    label(for='editPrice') Price:
+                                    label(for='editPrice') Giá:
                                     input#editPrice.form-control(type='number', name='price', required)
                                 .form-group
-                                    label(for='editSummary') Summary:
+                                    label(for='editSummary') Tóm tắt:
                                     textarea#editSummary.form-control(name='summary', required)
                                 .form-group
-                                    label(for='editDescription') Description:
+                                    label(for='editDescription') Mô tả chi tiết:
                                     textarea#editDescription.form-control(name='description', required)
                                 .form-group
-                                    label(for='editImageCover') Image Cover:
+                                    label(for='editImageCover') Ảnh đại diện chuyến đi:
                                     input#editImageCover.form-control(type='file', name='imageCover')
                                 .form-group
-                                    label(for='editImages') Images:
+                                    label(for='editImages') Ảnh thực tế chuyến đi:
                                     input#editImages.form-control(type='file', name='images', multiple)
                                 .form-group
-                                    label(for='editStartDates') Start Dates:
+                                    label(for='editStartDates') Ngày khởi hành:
                                     input#editStartDates.form-control(type='date', name='startDates', required)
                                 .form-group
-                                    label(for='editStartLocation') Start Location:
+                                    label(for='editStartLocation') Địa điểm khởi hành:
                                     input#editStartLocation.form-control(type='text', name='startLocation', required)
                                 .form-group
-                                    label(for='editLocations') Locations:
+                                    label(for='editLocations') Địa điểm dừng chân:
                                     input#editLocations.form-control(type='text', name='locations', required)
                                 div.modal-footer
-                                    button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Close
-                                    button.btn.btn-primary(type='submit') Save Changes
+                                    button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Đóng
+                                    button.btn.btn-primary(type='submit') Cập nhật
 
-
+            div.modal.fade#editReviewModal(tabindex='-1', aria-labelledby='editReviewModalLabel', aria-hidden='true')
+                div.modal-dialog
+                    div.modal-content
+                        div.modal-header
+                            h5.modal-title#editReviewModalLabel Cập nhật thông tin bài đánh giá
+                            button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
+                        div.modal-body
+                            form#editReviewForm.form-review-update
+                                .form-group
+                                    label(for='editReviewText') Đánh giá:
+                                    textarea#editReviewText.form-control(name='review', required)
+                                .form-group
+                                    label(for='editReviewRating') Sao đánh giá:
+                                    input#editReviewRating.form-control(type='number', name='rating', min='1', max='5', required)
+                                input(type='hidden', id='reviewId', name='reviewId')
+                                input(type='hidden', id='tourId', name='tourId')
+                                input(type='hidden', id='userId', name='userId')
+                                div.modal-footer
+                                    button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Đóng
+                                    button.btn.btn-primary(type='submit') Cập nhật
 
         script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js', integrity='sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM', crossorigin='anonymous')
         script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js')

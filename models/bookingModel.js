@@ -4,18 +4,18 @@ const bookingSchema = new mongoose.Schema({
   tour: {
     type: mongoose.Schema.ObjectId,
     ref: 'Tour',
-    required: [true, 'Booking must belong to a tour'],
+    required: [true, 'Hóa đơn phải có chuyến đi kèm theo!'],
   },
 
   user: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',
-    required: [true, 'Booking must belong to a tour'],
+    required: [true, 'Hóa đơn phải có người dùng đăng kí!'],
   },
 
   price: {
     type: Number,
-    required: [true, 'Booking must have a price'],
+    required: [true, 'Hóa đơn phải có giá trị của chuyến đi!'],
   },
 
   createAt: {

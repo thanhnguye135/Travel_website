@@ -83,12 +83,12 @@ const tourSchema = new mongoose.Schema(
 
     startLocation: {
       type: [String],
-      required: [true],
+      required: [true, 'Chuyến đi phải có địa điểm bắt đầu cụ thể!'],
     },
 
     locations: {
       type: [String],
-      required: [true],
+      required: [true, 'Chuyến đi phải có địa điểm dừng chân cụ thể!'],
     },
 
     guides: [

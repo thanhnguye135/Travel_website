@@ -10,7 +10,7 @@ const logout = async () => {
     if ((res.data.status = 'success')) location.assign('/overview');
   } catch (err) {
     // console.log(err);
-    alert('error', 'Error logging out! Try again.');
+    alert('error', 'Lỗi đăng xuất. Vui lòng thử lại sau!');
   }
 };
 

@@ -133,7 +133,7 @@ exports.updateUser = catchingErrorAsync(async (req, res, next) => {
   });
   if (!doc) {
     return next(
-      new AppError('Không tài liệu nào được tìm thấy với id này', 404)
+      new AppError('Không người dùng nào được tìm thấy với id này', 404)
     );
   }
   // console.log(doc);
@@ -149,7 +149,7 @@ exports.deleteUser = catchingErrorAsync(async (req, res, next) => {
   const doc = await User.findByIdAndDelete(req.params.id);
   if (!doc) {
     return next(
-      new AppError('Không tài liệu nào được tìm thấy với id này', 404)
+      new AppError('Không người dùng nào được tìm thấy với id này', 404)
     );
   }
   res.status(204).json({

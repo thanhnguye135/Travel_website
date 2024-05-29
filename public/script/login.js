@@ -12,7 +12,7 @@ const login = async (email, password) => {
     });
 
     if (res.data.status === 'success') {
-      alert('success', 'Logged in successfully!');
+      alert('success', 'Đăng nhập thành công!');
       window.setTimeout(() => {
         location.assign('/overview');
       }, 1500);

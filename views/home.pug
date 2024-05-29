@@ -10,8 +10,6 @@ mixin reviewBox(review)
         svg.reviews__star(class=`reviews__star--${cssClass}`)
           use(xlink:href='/img/icons.svg#icon-star')
         
-
-
 doctype html
 html(lang='vi')
   head
@@ -24,7 +22,7 @@ html(lang='vi')
     link(rel='stylesheet', href='/css/home.css')
     link(rel='stylesheet', href='/css/footer.css')
     link(rel='shortcut icon', type='image/png', href='/img/favicon.png')
-    title Giới thiệu các chuyến đi du lịch
+    title Chi tiết chuyến đi
   body
     header.header
       nav.nav.nav--tours
@@ -51,11 +49,11 @@ html(lang='vi')
           .heading-box__detail
             svg.heading-box__icon
               use(xlink:href='/img/icons.svg#icon-clock')
-            span.heading-box__text=`${tour.duration} day`
+            span.heading-box__text=`${tour.duration} ngày`
           .heading-box__detail
             svg.heading-box__icon
               use(xlink:href='/img/icons.svg#icon-map-pin')
-            span.heading-box__text=tour.startLocation.description
+            span.heading-box__text=`${new Date(tour.startDates[0]).toLocaleDateString('en-GB').replace(/\//g, '-')}`
     section.section-description
       .overview-box
         div
@@ -65,7 +63,7 @@ html(lang='vi')
               svg.overview-box__icon
                 use(xlink:href='/img/icons.svg#icon-calendar')
               span.overview-box__label Khởi hành
-              span.overview-box__text=tour.startDates[0].toLocaleString('en-us', {month: 'long', year: 'numeric'})
+              span.overview-box__text=`${new Date(tour.startDates[0]).toLocaleDateString('en-GB').replace(/\//g, '-')}`
             .overview-box__detail
               svg.overview-box__icon
                 use(xlink:href='/img/icons.svg#icon-trending-up')
@@ -74,8 +72,8 @@ html(lang='vi')
             .overview-box__detail
               svg.overview-box__icon
                 use(xlink:href='/img/icons.svg#icon-user')
-              span.overview-box__label Số lượng người
-              span.overview-box__text=`${tour.maxGroupSize} people`
+              span.overview-box__label Số lượng người tối đa
+              span.overview-box__text=`${tour.maxGroupSize} người`
             .overview-box__detail
               svg.overview-box__icon
                 use(xlink:href='/img/icons.svg#icon-star')
@@ -112,13 +110,13 @@ html(lang='vi')
         img.cta__img.cta__img--1(src=`/img/tours/${tour.images[1]}`, alt='Natours logo')
         img.cta__img.cta__img--2(src=`/img/tours/${tour.images[2]}`, alt='Natours logo')
         .cta__content
-          h2.heading-secondary What are you waiting for?
-          p.cta__text 10 days. 1 adventure. Infinite memories. Make it yours today!
+          h2.heading-secondary Bạn còn chờ đợi điều gì?
+          p.cta__text 10 ngày. 1 chuyến phưu lưu. Kí ức vô tận. Đăng kí ngay!
 
           if user 
-            button.btn.btn--green.span-all-rows#book-tour(data-tour-id=`${tour.id}`) Book tour now!
+            button.btn.btn--green.span-all-rows#book-tour(data-tour-id=`${tour.id}`) Đăng kí chuyến đi!
           else 
-            a.btn.btn--green.span-all-rows(href='/login') Login to book tour
+            a.btn.btn--green.span-all-rows(href='/login') Đăng nhập để đăng kí chuyến đi!
       
     include _footer
 

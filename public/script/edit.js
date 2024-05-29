@@ -66,16 +66,19 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('tourImageCover').textContent = tour.imageCover;
         document.getElementById('tourImages').textContent =
           tour.images.join(', ');
-        document.getElementById('tourStartDates').textContent =
-          tour.startDates.join(', ');
-        document.getElementById(
-          'tourStartLocation'
-        ).textContent = `${tour.startLocation.description}, ${tour.startLocation.address}`;
+        document.getElementById('tourStartDates').textContent = new Date(
+          tour.startDates[0]
+        )
+          .toLocaleDateString('en-GB')
+          .replace(/\//g, '-');
+        document.getElementById('tourStartLocation').textContent =
+          tour.startLocation.map((loc) => loc).join(', ');
         document.getElementById('tourLocations').textContent = tour.locations
-          .map((loc) => loc.description)
+          .map((loc) => loc)
           .join(', ');
-        document.getElementById('tourGuides').textContent =
-          tour.guides.join(', ');
+        document.getElementById('tourGuides').textContent = tour.guides
+          .map((guide) => guide.name)
+          .join(', ');
 
         // Show the modal
         const tourModal = new bootstrap.Modal(
@@ -205,6 +208,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('editUserModal')
           );
           editUserModal.hide();
+          location.reload(); // Reload the page to reflect changes
         } else {
           alert('Failed to update user');
         }
@@ -343,12 +347,82 @@ document.addEventListener('DOMContentLoaded', function () {
           );
           editTourModal.hide();
           // Optionally, refresh the page or update the UI with the new tour data
+          location.reload(); // Reload the page to reflect changes
         } else {
           alert('Failed to update tour');
         }
       } catch (error) {
         console.error('Error updating tour data:', error);
         alert('Failed to update tour data');
+      }
+    });
+
+  document.querySelectorAll('.btn-edit-review').forEach((button) => {
+    button.addEventListener('click', async function (event) {
+      event.preventDefault();
+      const reviewId = this.dataset.id;
+
+      try {
+        // Fetch review data from the server
+        const response = await axios.get(
+          `http://localhost:5000/api/v1/reviews/${reviewId}`
+        );
+        const reviewData = response.data.data.review;
+
+        // Populate form fields in the modal with review data
+        document.getElementById('editReviewText').value = reviewData.review;
+        document.getElementById('editReviewRating').value = reviewData.rating;
+
+        // Store the reviewId in a hidden field or data attribute to use it later during the update
+        document.getElementById('editReviewForm').dataset.reviewId = reviewId;
+
+        // Open the modal
+        const editReviewModal = new bootstrap.Modal(
+          document.getElementById('editReviewModal')
+        );
+        editReviewModal.show();
+      } catch (error) {
+        console.error('Error fetching review data:', error);
+        alert('Failed to fetch review data');
+      }
+    });
+  });
+
+  // Handling the form submission
+  document
+    .getElementById('editReviewForm')
+    .addEventListener('submit', async function (event) {
+      event.preventDefault();
+      const reviewId = this.dataset.reviewId;
+
+      const formData = new FormData(this);
+      const reviewData = Object.fromEntries(formData.entries());
+
+      try {
+        const response = await axios.patch(
+          `http://localhost:5000/api/v1/reviews/${reviewId}`,
+          reviewData,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          alert('Review updated successfully');
+          // Close the modal
+          const editReviewModal = bootstrap.Modal.getInstance(
+            document.getElementById('editReviewModal')
+          );
+          editReviewModal.hide();
+          location.reload(); // Reload the page to reflect changes
+        } else {
+          throw new Error('Failed to update review');
+        }
+      } catch (error) {
+        console.error('Error updating review:', error);
+        alert('Failed to update review');
       }
     });
 
@@ -374,6 +448,7 @@ document.addEventListener('DOMContentLoaded', function () {
               );
               if (reviewResponse.status === 204) {
                 alert('Reviews of the tour deleted successfully');
+                location.reload(); // Reload the page to reflect changes
               } else {
                 alert('Failed to delete reviews of the tour');
               }
@@ -413,6 +488,7 @@ document.addEventListener('DOMContentLoaded', function () {
               );
               if (reviewResponse.status === 204) {
                 alert('Reviews of the tour deleted successfully');
+                location.reload(); // Reload the page to reflect changes
               } else {
                 alert('Failed to delete reviews of the tour');
               }
@@ -444,6 +520,7 @@ document.addEventListener('DOMContentLoaded', function () {
             alert('User deleted successfully');
             // Remove the row from the table
             this.closest('tr').remove();
+            location.reload(); // Reload the page to reflect changes
           } else {
             alert('Failed to delete user');
           }
@@ -468,6 +545,7 @@ document.addEventListener('DOMContentLoaded', function () {
             alert('User deleted successfully');
             // Remove the row from the table
             this.closest('tr').remove();
+            location.reload(); // Reload the page to reflect changes
           } else {
             alert('Failed to delete user');
           }

@@ -18,7 +18,10 @@ exports.deleteBookingEmail = catchingErrorAsync(async (req, res, next) => {
   // console.log(doc);
   if (!doc) {
     return next(
-      new AppError('Không tài liệu nào được tìm thấy với id này', 404)
+      new AppError(
+        'Không thông tin đặt chuyến đi nào được tìm thấy với id này',
+        404
+      )
     );
   }
   res.status(204).json({

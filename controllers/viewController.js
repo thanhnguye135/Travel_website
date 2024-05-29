@@ -12,6 +12,8 @@ exports.getHome = catchingErrorAsync(async (req, res, next) => {
     fields: 'review rating user',
   });
 
+  console.log(tour);
+
   if (!tour) {
     return next(new AppError('Không có chuyến đi nào với tên tìm kiếm', 404));
   }
