@@ -99,6 +99,15 @@ exports.createTour = catchingErrorAsync(async (req, res, next) => {
 });
 
 exports.updateTour = catchingErrorAsync(async (req, res, next) => {
+  if (req.files) {
+    if (req.files.imageCover) {
+      req.body.imageCover = req.files.imageCover[0].filename;
+    }
+    if (req.files.images) {
+      req.body.images = req.files.images.map((file) => file.filename);
+    }
+  }
+
   const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,

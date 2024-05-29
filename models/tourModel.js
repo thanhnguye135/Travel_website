@@ -34,9 +34,9 @@ const tourSchema = new mongoose.Schema(
       type: String,
       require: [true, 'Chuyến đi phải có độ khó'],
       enum: {
-        values: ['dễ', 'trung bình', 'khó'],
+        values: ['Dễ', 'Trung Bình', 'Khó'],
         message:
-          'Độ khó của chuyến đi chỉ được dùng các từ dễ, trung bình, khó',
+          'Độ khó của chuyến đi chỉ được dùng các từ Dễ, Trung Bình, Khó',
       },
     },
 
@@ -56,16 +56,6 @@ const tourSchema = new mongoose.Schema(
       type: Number,
       required: [true, 'Chuyến đi phải có giá của chuyến đi'],
     },
-
-    // priceDiscount: {
-    //   type: Number,
-    //   validate: {
-    //     validator: function (val) {
-    //       return val < this.price;
-    //     },
-    //     message: 'The price discount {{VALUE}} should be blow the price',
-    //   },
-    // },
 
     summary: {
       type: String,
@@ -92,28 +82,14 @@ const tourSchema = new mongoose.Schema(
     },
 
     startLocation: {
-      type: {
-        type: String,
-        default: 'Point',
-        enum: ['Point'],
-      },
-      address: String,
-      coordinates: [Number],
-      description: String,
+      type: [String],
+      required: [true],
     },
 
-    locations: [
-      {
-        type: {
-          type: String,
-          default: 'Point',
-          enum: ['Point'],
-        },
-        coordinates: [Number],
-        description: String,
-        day: Number,
-      },
-    ],
+    locations: {
+      type: [String],
+      required: [true],
+    },
 
     guides: [
       {

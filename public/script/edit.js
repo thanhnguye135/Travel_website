@@ -226,7 +226,8 @@ document.addEventListener('DOMContentLoaded', function () {
           `http://localhost:5000/api/v1/tours/${tourId}`
         );
         const tourData = response.data.data.tour;
-        console.log(tourData);
+        // console.log(tourData);
+        console.log(tourData.locations.map((loc) => loc).join(', '));
 
         // Populate form fields in the modal with tour data
         document.getElementById('editTourName').value = tourData.name;
@@ -241,13 +242,15 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('editPrice').value = tourData.price;
         document.getElementById('editSummary').value = tourData.summary;
         document.getElementById('editDescription').value = tourData.description;
-        // document.getElementById('editStartDates').value = tourData.startDates[0]
-        //   .toLocaleDateString('en-GB')
-        //   .replace(/\//g, '-');
+        document.getElementById('editStartDates').value = new Date(
+          tourData.startDates[0]
+        )
+          .toLocaleDateString('en-GB')
+          .replace(/\//g, '-');
         document.getElementById('editStartLocation').value =
-          tourData.startLocation.description;
+          tourData.startLocation.map((loc) => loc).join(', ');
         document.getElementById('editLocations').value = tourData.locations
-          .map((loc) => loc.description)
+          .map((loc) => loc)
           .join(', ');
 
         // Set the form's data-tour-id attribute
@@ -266,86 +269,88 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // Function to handle the form submission and update the tour data
-  // document
-  //   .getElementById('editTourForm')
-  //   .addEventListener('submit', async function (event) {
-  //     event.preventDefault();
+  document
+    .getElementById('editTourForm')
+    .addEventListener('submit', async function (event) {
+      event.preventDefault();
 
-  //     // Retrieve the tourId from the form's data attribute
-  //     const tourId = this.dataset.tourId;
-  //     const name = document.getElementById('editTourName').value;
-  //     const duration = document.getElementById('editDuration').value;
-  //     const maxGroupSize = document.getElementById('editMaxGroupSize').value;
-  //     const difficulty = document.getElementById('editDifficulty').value;
-  //     const ratingsAverage =
-  //       document.getElementById('editRatingsAverage').value;
-  //     const ratingsQuantity = document.getElementById(
-  //       'editRatingsQuantity'
-  //     ).value;
-  //     const price = document.getElementById('editPrice').value;
-  //     const summary = document.getElementById('editSummary').value;
-  //     const description = document.getElementById('editDescription').value;
-  //     const imageCover = document.getElementById('editImageCover').files[0];
-  //     const images = Array.from(document.getElementById('editImages').files);
-  //     const startDates = document
-  //       .getElementById('editStartDates')
-  //       .value.split(',')
-  //       .map((date) => new Date(date.trim()));
-  //     const startLocation = document.getElementById('editStartLocation').value;
-  //     const locations = document
-  //       .getElementById('editLocations')
-  //       .value.split(',')
-  //       .map((loc) => loc.trim());
+      // Retrieve the tourId from the form's data attribute
+      const tourId = this.dataset.tourId;
+      const name = document.getElementById('editTourName').value;
+      const duration = document.getElementById('editDuration').value;
+      const maxGroupSize = document.getElementById('editMaxGroupSize').value;
+      const diffVal = document.getElementById('editDifficulty').value;
+      const difficulty =
+        diffVal === 'easy' ? 'Dễ' : diffVal === 'medium' ? 'Trung Bình' : 'Khó';
+      const ratingsAverage =
+        document.getElementById('editRatingsAverage').value;
+      const ratingsQuantity = document.getElementById(
+        'editRatingsQuantity'
+      ).value;
+      const price = document.getElementById('editPrice').value;
+      const summary = document.getElementById('editSummary').value;
+      const description = document.getElementById('editDescription').value;
+      const imageCover = document.getElementById('editImageCover').files[0];
+      const images = Array.from(document.getElementById('editImages').files);
+      const startDates = document.getElementById('editStartDates').value;
+      const startLocation = document
+        .getElementById('editStartLocation')
+        .value.split(',')
+        .map((loc) => loc.trim());
+      const locations = document
+        .getElementById('editLocations')
+        .value.split(',')
+        .map((loc) => loc.trim());
 
-  //     try {
-  //       // Create a FormData object to handle the file uploads
-  //       const formData = new FormData();
-  //       formData.append('name', name);
-  //       formData.append('duration', duration);
-  //       formData.append('maxGroupSize', maxGroupSize);
-  //       formData.append('difficulty', difficulty);
-  //       formData.append('ratingsAverage', ratingsAverage);
-  //       formData.append('ratingsQuantity', ratingsQuantity);
-  //       formData.append('price', price);
-  //       formData.append('summary', summary);
-  //       formData.append('description', description);
-  //       if (imageCover) {
-  //         formData.append('imageCover', imageCover);
-  //       }
-  //       images.forEach((image, index) => {
-  //         formData.append(`images`, image);
-  //       });
-  //       formData.append('startDates', JSON.stringify(startDates));
-  //       formData.append('startLocation', startLocation);
-  //       formData.append('locations', JSON.stringify(locations));
+      try {
+        // Create a FormData object to handle the file uploads
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('duration', duration);
+        formData.append('maxGroupSize', maxGroupSize);
+        formData.append('difficulty', difficulty);
+        formData.append('ratingsAverage', ratingsAverage);
+        formData.append('ratingsQuantity', ratingsQuantity);
+        formData.append('price', price);
+        formData.append('summary', summary);
+        formData.append('description', description);
+        if (imageCover) {
+          formData.append('imageCover', imageCover);
+        }
+        images.forEach((image, index) => {
+          formData.append(`images`, image);
+        });
+        formData.append('startDates', startDates);
+        formData.append('startLocation', startLocation);
+        formData.append('locations', locations);
 
-  //       // Send updated data to the server
-  //       const response = await axios.patch(
-  //         `http://localhost:5000/api/v1/tours/${tourId}`,
-  //         formData,
-  //         {
-  //           headers: {
-  //             'Content-Type': 'multipart/form-data',
-  //           },
-  //         }
-  //       );
+        // Send updated data to the server
+        const response = await axios.patch(
+          `http://localhost:5000/api/v1/tours/${tourId}`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
 
-  //       if (response.data.status === 'success') {
-  //         alert('Tour updated successfully');
-  //         // Close the modal
-  //         const editTourModal = bootstrap.Modal.getInstance(
-  //           document.getElementById('editTourModal')
-  //         );
-  //         editTourModal.hide();
-  //         // Optionally, refresh the page or update the UI with the new tour data
-  //       } else {
-  //         alert('Failed to update tour');
-  //       }
-  //     } catch (error) {
-  //       console.error('Error updating tour data:', error);
-  //       alert('Failed to update tour data');
-  //     }
-  //   });
+        if (response.data.status === 'success') {
+          alert('Tour updated successfully');
+          // Close the modal
+          const editTourModal = bootstrap.Modal.getInstance(
+            document.getElementById('editTourModal')
+          );
+          editTourModal.hide();
+          // Optionally, refresh the page or update the UI with the new tour data
+        } else {
+          alert('Failed to update tour');
+        }
+      } catch (error) {
+        console.error('Error updating tour data:', error);
+        alert('Failed to update tour data');
+      }
+    });
 
   // Handle delete button click
   document.querySelectorAll('.btn-delete-user').forEach((button) => {
