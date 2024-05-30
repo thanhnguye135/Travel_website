@@ -56,7 +56,9 @@ app.use('/api/v1/emails', bookingEmailRouter);
 app.use('/', viewRouter);
 
 app.all('*', (req, res, next) => {
-  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
+  return next(
+    new AppError(`Can't find ${req.originalUrl} on this server!`, 404)
+  );
 });
 
 app.use(globalErrorHandler);
