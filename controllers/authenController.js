@@ -40,7 +40,7 @@ exports.signup = catchingErrorAsync(async (req, res, next) => {
   const newUser = await User.create(req.body);
   const url = `${req.protocol}://${req.get('host')}/account`;
 
-  await new Email(newUser, url).sendWelcome();
+  // await new Email(newUser, url).sendWelcome();
   sendToken(newUser, 201, res);
 });
 

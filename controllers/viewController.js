@@ -11,8 +11,12 @@ exports.getHome = catchingErrorAsync(async (req, res, next) => {
     path: 'reviews',
     fields: 'review rating user',
   });
+  // console.log(req['reviews']);
+  // const tour = await Tour.findOne({ slug: req.params.slug }).populate(
+  //   'reviews'
+  // );
 
-  console.log(tour);
+  // console.log(tour);
 
   if (!tour) {
     return next(new AppError('Không có chuyến đi nào với tên tìm kiếm', 404));
@@ -22,45 +26,50 @@ exports.getHome = catchingErrorAsync(async (req, res, next) => {
 });
 
 exports.getAdmin = catchingErrorAsync(async (req, res, next) => {
-  const user = req.user;
+  try {
+    const user = req.user;
 
-  if (user.role !== 'admin') {
-    return next(
-      new AppError(
-        'Người dùng không tồn tại. Vui lòng đăng nhập tài khoản hợp lệ!',
-        404
-      )
-    );
+    if (user.role !== 'admin') {
+      return next(
+        new AppError(
+          'Người dùng không tồn tại. Vui lòng đăng nhập tài khoản hợp lệ!',
+          404
+        )
+      );
+    }
+
+    const tours = await Tour.find();
+    const users = await User.find();
+    const reviews = await Review.find();
+    const bookings = await BookingTour.find();
+    const emails = await BookingEmail.find();
+
+    // console.log(reviews);
+    const rowsPerPage = 10;
+
+    const totalUsersPages = Math.ceil(users.length / rowsPerPage);
+    const totalToursPages = Math.ceil(tours.length / rowsPerPage);
+    const totalReviewsPages = Math.ceil(reviews.length / rowsPerPage);
+    const totalBookingsPages = Math.ceil(bookings.length / rowsPerPage);
+    const totalEmailsPages = Math.ceil(emails.length / rowsPerPage);
+
+    res.status(200).render('admin', {
+      user,
+      tours,
+      users,
+      reviews,
+      bookings,
+      emails,
+      totalUsersPages,
+      totalToursPages,
+      totalReviewsPages,
+      totalBookingsPages,
+      totalEmailsPages,
+      currentPage: 1,
+    });
+  } catch (err) {
+    console.log(err);
   }
-
-  const tours = await Tour.find();
-  const users = await User.find();
-  const reviews = await Review.find();
-  const bookings = await BookingTour.find();
-  const emails = await BookingEmail.find();
-
-  const rowsPerPage = 10;
-
-  const totalUsersPages = Math.ceil(users.length / rowsPerPage);
-  const totalToursPages = Math.ceil(tours.length / rowsPerPage);
-  const totalReviewsPages = Math.ceil(reviews.length / rowsPerPage);
-  const totalBookingsPages = Math.ceil(bookings.length / rowsPerPage);
-  const totalEmailsPages = Math.ceil(emails.length / rowsPerPage);
-
-  res.status(200).render('admin', {
-    user,
-    tours,
-    users,
-    reviews,
-    bookings,
-    emails,
-    totalUsersPages,
-    totalToursPages,
-    totalReviewsPages,
-    totalBookingsPages,
-    totalEmailsPages,
-    currentPage: 1,
-  });
 });
 
 exports.getTravel = async (req, res) => {

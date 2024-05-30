@@ -6,9 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const userId = this.dataset.id;
       try {
         // Fetch user details from the server
-        const response = await axios.get(
-          `http://localhost:5000/api/v1/users/${userId}`
-        );
+        const response = await axios.get(`/api/v1/users/${userId}`);
         const { data } = response.data;
         const { user } = data;
 
@@ -18,8 +16,8 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('userPhoto').textContent = user[0].photo;
         document.getElementById('userRole').textContent = user[0].role;
         document.getElementById('userActive').textContent = user[0].active
-          ? 'Dung hoat dong'
-          : 'Dang hoat dong';
+          ? 'Đang hoạt động'
+          : 'Ngừng hoạt động';
         // Add other user details as needed
 
         // Show the modal
@@ -28,8 +26,8 @@ document.addEventListener('DOMContentLoaded', function () {
         );
         userModal.show();
       } catch (error) {
-        console.error('Error fetching user details:', error);
-        alert('Failed to fetch user details');
+        console.error('Lỗi xem thông tin chi tiết người dùng:', error);
+        alert('Lỗi xem thông tin chi tiết người dùng');
       }
     });
   });
@@ -41,9 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       try {
         // Fetch tour details from the server
-        const response = await axios.get(
-          `http://localhost:5000/api/v1/tours/${tourId}`
-        );
+        const response = await axios.get(`/api/v1/tours/${tourId}`);
         const tour = response.data.data.tour;
 
         // Populate the modal with tour details
@@ -86,8 +82,8 @@ document.addEventListener('DOMContentLoaded', function () {
         );
         tourModal.show();
       } catch (error) {
-        console.error('Error fetching tour details:', error);
-        alert('Failed to fetch tour details');
+        console.error('Lỗi xem thông tin chi tiết chuyến đi:', error);
+        alert('Lỗi xem thông tin chi tiết chuyến đi');
       }
     });
   });
@@ -99,9 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       try {
         // Fetch tour details from the server
-        const response = await axios.get(
-          `http://localhost:5000/api/v1/reviews/${reviewId}`
-        );
+        const response = await axios.get(`/api/v1/reviews/${reviewId}`);
         const review = response.data.data.review;
 
         // Populate the modal with tour details
@@ -125,8 +119,8 @@ document.addEventListener('DOMContentLoaded', function () {
         );
         reviewModal.show();
       } catch (error) {
-        console.error('Error fetching tour details:', error);
-        alert('Failed to fetch tour details');
+        console.error('Lỗi xem thông tin chi tiết bài đánh giá:', error);
+        alert('Lỗi xem thông tin chi tiết bài đánh giá');
       }
     });
   });
@@ -140,9 +134,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       try {
         // Fetch user data from the server
-        const response = await axios.get(
-          `http://localhost:5000/api/v1/users/${userId}`
-        );
+        const response = await axios.get(`/api/v1/users/${userId}`);
         const userData = response.data.data.user;
         console.log(userData[0]);
 
@@ -162,8 +154,8 @@ document.addEventListener('DOMContentLoaded', function () {
         );
         editUserModal.show();
       } catch (error) {
-        console.error('Error fetching user data:', error);
-        alert('Failed to fetch user data');
+        console.error('Lỗi cập nhật nười dùng', error);
+        alert('Lỗi cập nhật nười dùng');
       }
     });
   });
@@ -192,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function () {
         formData.append('active', active);
         // Send updated data to the server
         const response = await axios.patch(
-          `http://localhost:5000/api/v1/users/${userId}`,
+          `/api/v1/users/${userId}`,
           formData,
           {
             headers: {
@@ -202,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function () {
         );
 
         if (response.data.status === 'success') {
-          alert('User updated successfully');
+          alert('Cập nhật người dùng thành công');
           // Optionally, refresh the page or update the UI with the new user data
           const editUserModal = bootstrap.Modal.getInstance(
             document.getElementById('editUserModal')
@@ -210,11 +202,11 @@ document.addEventListener('DOMContentLoaded', function () {
           editUserModal.hide();
           location.reload(); // Reload the page to reflect changes
         } else {
-          alert('Failed to update user');
+          alert('Lỗi cập nhật nười dùng');
         }
       } catch (error) {
-        console.error('Error updating user data:', error);
-        alert('Failed to update user data');
+        console.error('Lỗi cập nhật nười dùng:', error);
+        alert('Lỗi cập nhật nười dùng');
       }
     });
 
@@ -226,9 +218,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       try {
         // Fetch tour data from the server
-        const response = await axios.get(
-          `http://localhost:5000/api/v1/tours/${tourId}`
-        );
+        const response = await axios.get(`/api/v1/tours/${tourId}`);
         const tourData = response.data.data.tour;
         // console.log(tourData);
         console.log(tourData.locations.map((loc) => loc).join(', '));
@@ -266,8 +256,8 @@ document.addEventListener('DOMContentLoaded', function () {
         );
         editTourModal.show();
       } catch (error) {
-        console.error('Error fetching tour data:', error);
-        alert('Failed to fetch tour data');
+        console.error('Lỗi cập nhật chuyến đi:', error);
+        alert('Lỗi cập nhật chuyến đi');
       }
     });
   });
@@ -330,7 +320,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Send updated data to the server
         const response = await axios.patch(
-          `http://localhost:5000/api/v1/tours/${tourId}`,
+          `/api/v1/tours/${tourId}`,
           formData,
           {
             headers: {
@@ -340,7 +330,7 @@ document.addEventListener('DOMContentLoaded', function () {
         );
 
         if (response.data.status === 'success') {
-          alert('Tour updated successfully');
+          alert('Cập nhật chuyến đi thành công');
           // Close the modal
           const editTourModal = bootstrap.Modal.getInstance(
             document.getElementById('editTourModal')
@@ -349,11 +339,11 @@ document.addEventListener('DOMContentLoaded', function () {
           // Optionally, refresh the page or update the UI with the new tour data
           location.reload(); // Reload the page to reflect changes
         } else {
-          alert('Failed to update tour');
+          alert('Lỗi cập nhật chuyến đi');
         }
       } catch (error) {
-        console.error('Error updating tour data:', error);
-        alert('Failed to update tour data');
+        console.error('Lỗi cập nhật chuyến đi:', error);
+        alert('Lỗi cập nhật chuyến đi');
       }
     });
 
@@ -364,9 +354,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       try {
         // Fetch review data from the server
-        const response = await axios.get(
-          `http://localhost:5000/api/v1/reviews/${reviewId}`
-        );
+        const response = await axios.get(`/api/v1/reviews/${reviewId}`);
         const reviewData = response.data.data.review;
 
         // Populate form fields in the modal with review data
@@ -382,8 +370,8 @@ document.addEventListener('DOMContentLoaded', function () {
         );
         editReviewModal.show();
       } catch (error) {
-        console.error('Error fetching review data:', error);
-        alert('Failed to fetch review data');
+        console.error('Lỗi cập nhật bài đánh giá:', error);
+        alert('Lỗi cập nhật bài đánh giá');
       }
     });
   });
@@ -400,7 +388,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       try {
         const response = await axios.patch(
-          `http://localhost:5000/api/v1/reviews/${reviewId}`,
+          `/api/v1/reviews/${reviewId}`,
           reviewData,
           {
             headers: {
@@ -410,7 +398,7 @@ document.addEventListener('DOMContentLoaded', function () {
         );
 
         if (response.status === 200) {
-          alert('Review updated successfully');
+          alert('Cập nhật đánh giá thành công');
           // Close the modal
           const editReviewModal = bootstrap.Modal.getInstance(
             document.getElementById('editReviewModal')
@@ -418,11 +406,11 @@ document.addEventListener('DOMContentLoaded', function () {
           editReviewModal.hide();
           location.reload(); // Reload the page to reflect changes
         } else {
-          throw new Error('Failed to update review');
+          throw new Error('Lỗi cập nhật bài đánh giá');
         }
       } catch (error) {
-        console.error('Error updating review:', error);
-        alert('Failed to update review');
+        console.error('Lỗi cập nhật bài đánh giá:', error);
+        alert('Lỗi cập nhật bài đánh giá');
       }
     });
 
@@ -431,37 +419,35 @@ document.addEventListener('DOMContentLoaded', function () {
     button.addEventListener('click', async function (event) {
       event.preventDefault();
       const userId = this.dataset.id;
-      if (confirm('Are you sure you want to delete this user?')) {
+      if (confirm('Bạn chắc chắn muốn xóa người dùng?')) {
         try {
-          const response = await axios.delete(
-            `http://localhost:5000/api/v1/users/${userId}`
-          );
+          const response = await axios.delete(`/api/v1/users/${userId}`);
           if (response.status === 204) {
-            alert('User deleted successfully');
+            alert('Xoá người dùng thành công');
             // Remove the row from the table
             this.closest('tr').remove();
 
             //Delete the reviews associated with the tour
             try {
               const reviewResponse = await axios.delete(
-                `http://localhost:5000/api/v1/reviews/users/${userId}`
+                `/api/v1/reviews/users/${userId}`
               );
               if (reviewResponse.status === 204) {
-                alert('Reviews of the tour deleted successfully');
+                alert('Bài đánh giá của người dùng được xóa thành công');
                 location.reload(); // Reload the page to reflect changes
               } else {
-                alert('Failed to delete reviews of the tour');
+                alert('Lỗi xóa đánh giá của người dùng');
               }
             } catch (error) {
-              console.error('Error deleting reviews:', error);
-              alert('Failed to delete reviews of the tour');
+              console.error('Lỗi xóa đánh giá của người dùng:', error);
+              alert('Lỗi xóa đánh giá của người dùng');
             }
           } else {
-            alert('Failed to delete user');
+            alert('Lỗi xóa người dùng');
           }
         } catch (error) {
           console.error('Error:', error);
-          alert('Failed to delete user');
+          alert('Lỗi xoá người dùng');
         }
       }
     });
@@ -471,37 +457,35 @@ document.addEventListener('DOMContentLoaded', function () {
     button.addEventListener('click', async function (event) {
       event.preventDefault();
       const tourId = this.dataset.id;
-      if (confirm('Are you sure you want to delete this user?')) {
+      if (confirm('Bạn chắc chắn muốn xóa chuyến đi?')) {
         try {
-          const response = await axios.delete(
-            `http://localhost:5000/api/v1/tours/${tourId}`
-          );
+          const response = await axios.delete(`/api/v1/tours/${tourId}`);
           if (response.status === 204) {
-            alert('User deleted successfully');
+            alert('Xoá chuyến đi thành công');
             // Remove the row from the table
             this.closest('tr').remove();
 
             // Delete the reviews associated with the tour
             try {
               const reviewResponse = await axios.delete(
-                `http://localhost:5000/api/v1/reviews/tours/${tourId}`
+                `/api/v1/reviews/tours/${tourId}`
               );
               if (reviewResponse.status === 204) {
-                alert('Reviews of the tour deleted successfully');
+                alert('Xóa đánh giá của chuyến đi thành công');
                 location.reload(); // Reload the page to reflect changes
               } else {
-                alert('Failed to delete reviews of the tour');
+                alert('Lỗi xóa đánh giá của chuyến đi');
               }
             } catch (error) {
-              console.error('Error deleting reviews:', error);
-              alert('Failed to delete reviews of the tour');
+              console.error('Lỗi xóa đánh giá của chuyến đi:', error);
+              alert('Lỗi xóa đánh giá của chuyến đi');
             }
           } else {
-            alert('Failed to delete user');
+            alert('Lỗi xóa chuyến đi');
           }
         } catch (error) {
           console.error('Error:', error);
-          alert('Failed to delete user');
+          alert('Lỗi xóa chuyến đi');
         }
       }
     });
@@ -511,22 +495,20 @@ document.addEventListener('DOMContentLoaded', function () {
     button.addEventListener('click', async function (event) {
       event.preventDefault();
       const reviewId = this.dataset.id;
-      if (confirm('Are you sure you want to delete this user?')) {
+      if (confirm('Bạn chắc chắn muốn xóa đánh giá?')) {
         try {
-          const response = await axios.delete(
-            `http://localhost:5000/api/v1/reviews/${reviewId}`
-          );
+          const response = await axios.delete(`/api/v1/reviews/${reviewId}`);
           if (response.status === 204) {
-            alert('User deleted successfully');
+            alert('Xóa đánh giá thành công');
             // Remove the row from the table
             this.closest('tr').remove();
             location.reload(); // Reload the page to reflect changes
           } else {
-            alert('Failed to delete user');
+            alert('Lỗi xóa đánh giá');
           }
         } catch (error) {
           console.error('Error:', error);
-          alert('Failed to delete user');
+          alert('Lỗi xóa đánh giá');
         }
       }
     });
@@ -536,22 +518,20 @@ document.addEventListener('DOMContentLoaded', function () {
     button.addEventListener('click', async function (event) {
       event.preventDefault();
       const emailId = this.dataset.id;
-      if (confirm('Are you sure you want to delete this user?')) {
+      if (confirm('Bạn chắc chắn muốn xóa hộp thư?')) {
         try {
-          const response = await axios.delete(
-            `http://localhost:5000/api/v1/emails/${emailId}`
-          );
+          const response = await axios.delete(`/api/v1/emails/${emailId}`);
           if (response.status === 204) {
-            alert('User deleted successfully');
+            alert('Xóa hộp thư thành công');
             // Remove the row from the table
             this.closest('tr').remove();
             location.reload(); // Reload the page to reflect changes
           } else {
-            alert('Failed to delete user');
+            alert('Lỗi xóa hộp thư');
           }
         } catch (error) {
           console.error('Error:', error);
-          alert('Failed to delete user');
+          alert('Lỗi xóa hộp thư');
         }
       }
     });

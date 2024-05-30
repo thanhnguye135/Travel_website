@@ -5,7 +5,7 @@ html(lang='vi')
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     link(rel='preconnect', href='https://fonts.googleapis.com')
     link(rel='preconnect', href='https://fonts.gstatic.com', crossorigin='')
-    link(href='https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap', rel='stylesheet')
+    link(href='https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap', rel='stylesheet')
     link(rel='stylesheet', href='css/icon-font.css')
     link(rel='stylesheet', href='css/home.css')
     link(rel='stylesheet', href='css/footer.css')
@@ -15,29 +15,33 @@ html(lang='vi')
     header.header
       nav.nav.nav--tours
         a.nav__el(href='/overview') Tất cả chuyến đi
-        
+
       .header__logo
         img(src='img/logo-white.png', alt='Natours logo')
       nav.nav.nav--user
         a.nav__el(href='/login') Đăng nhập
         a.nav__el.nav__el--cta(href='/signup') Đăng ký
-        
+
     main
-        .main
-            .login-form
-                h2.heading-secondary.ma-bt-lg Đăng ký tài khoản
-                form.form
-                .form__group
-                    label.form__label(for='email') Email
-                    input#email.form__input(type='email', placeholder='you@example.com', required='', autocomplete='off')
-                .form__group
-                    label.form__label(for='name') Họ và tên
-                    input#name.form__input(type='text', placeholder='Nguyễn Văn A', required='', autocomplete='off')
-                .form__group.ma-bt-md
-                    label.form__label(for='password') Mật khẩu
-                    input#password.form__input(type='password', placeholder='••••••••', required, minlength='8')
-                .form__group.ma-bt-md
-                    label.form__label(for='passwordConfirm') Nhập lại mật khẩu
-                    input#passwordConfirm.form__input(type='password', placeholder='••••••••', required, minlength='8')
-                .form__group
-                    button.btn.btn--green Đăng ký
+      .main
+        .login-form
+          h2.heading-secondary.ma-bt-lg Đăng ký tài khoản
+          form.form(id='signup-form')
+            .form__group
+              label.form__label(for='email') Email
+              input#email.form__input(type='email', placeholder='you@example.com', required='', autocomplete='off')
+            .form__group
+              label.form__label(for='name') Họ và tên
+              input#name.form__input(type='text', placeholder='Nguyễn Văn A', required='', autocomplete='off')
+            .form__group.ma-bt-md
+              label.form__label(for='password') Mật khẩu
+              input#password.form__input(type='password', placeholder='••••••••', required, minlength='8')
+            .form__group.ma-bt-md
+              label.form__label(for='passwordConfirm') Nhập lại mật khẩu
+              input#passwordConfirm.form__input(type='password', placeholder='••••••••', required, minlength='8')
+            .form__group
+              button.btn.btn--green(type='submit') Đăng ký
+
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js')
+    script(src='/script/signup.js') 
+    script(src='/script/logout.js') 
