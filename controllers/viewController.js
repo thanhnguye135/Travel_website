@@ -29,7 +29,7 @@ exports.getAdmin = catchingErrorAsync(async (req, res, next) => {
   try {
     const user = req.user;
 
-    if (user.role !== 'admin') {
+    if (!user || user.role !== 'admin') {
       return next(
         new AppError(
           'Người dùng không tồn tại. Vui lòng đăng nhập tài khoản hợp lệ!',
