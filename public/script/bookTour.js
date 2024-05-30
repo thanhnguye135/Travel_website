@@ -1,30 +1,33 @@
-import axios from 'axios';
 const stripe = Stripe(
   'pk_test_51PJTm4KfOPPh1e1TBuGNFOuhsHq7mOOYLsPjppLLqAujt5oiKmB4AS9cmp5eM3vQzUVclhF0mziTYt7FLh9h765E00XCtsiEAL'
 );
 
-export const bookTour = async (tourID) => {
+const bookTour = async (tourID) => {
   try {
-    //1) get checkout session
-    const session = await axios(`/api/v1/bookings/checkout-session/${tourID}`);
-    // console.log(session);
+    // 1) Get checkout session
+    const {
+      data: { session },
+    } = await axios.get(
+      `http://localhost:5000/api/v1/bookings/checkout-session/${tourID}`
+    );
 
-    //2) create checkout form
-    await stripe.redirectToCheckout({
-      sessionId: session.data.session.id,
-    });
-  } catch (err) {
-    // console.log(err);
-    alert(err);
+    // 2) Redirect to checkout
+    await stripe.redirectToCheckout({ sessionId: session.id });
+  } catch (error) {
+    console.error(error);
+    alert('Error: Unable to book the tour. Please try again later.');
   }
 };
 
-const bookBtn = document.getElementById('book-tour');
+document.addEventListener('DOMContentLoaded', function () {
+  const bookBtn = document.getElementById('book-tour');
 
-if (bookBtn) {
-  bookBtn.addEventListener('click', (e) => {
-    e.target.textContent = 'Processing...';
-    const { tourID } = e.target.dataset;
-    bookTour(tourID);
-  });
-}
+  if (bookBtn) {
+    bookBtn.addEventListener('click', async (event) => {
+      event.target.textContent = 'Processing...';
+      const { tourID } = event.target.dataset;
+      await bookTour(tourID);
+      event.target.textContent = 'Book Now';
+    });
+  }
+});

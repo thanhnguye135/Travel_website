@@ -11,6 +11,16 @@ html(lang='vi')
     link(rel='stylesheet', href='css/footer.css')
     link(rel='shortcut icon', type='image/png', href='img/favicon.png')
     title Đăng nhập tài khoản
+
+  style.
+    a.btn.btn-primary[href='/forgot-password'] {
+      color: blue;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+
+
   body
     header.header
       nav.nav.nav--tours
@@ -34,8 +44,31 @@ html(lang='vi')
                       label.form__label(for='password') Mật khẩu
                       input#password.form__input(type='password', placeholder='••••••••', required, minlength='8')
                   .form__group
-                      button.btn.btn--green Đăng nhập
+                      .button-container.d-flex.justify-content-between
+                        button.btn.btn--green(type='submit') Đăng nhập
+                        //- a.d-inline.p-2.btn-primary(href='/forgot-password') Quên mật khẩu?
 
     script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js')
     script(src='/script/login.js') 
     script(src='/script/logout.js') 
+    script.
+      document.addEventListener('DOMContentLoaded', function() {
+          var forgotPasswordLink = document.querySelector('a.btn-primary[href="/forgot-password"]');
+          forgotPasswordLink.addEventListener('click', function(event) {
+              event.preventDefault(); // Prevent the default link behavior
+              sendPasswordResetEmail();
+          });
+
+          function sendPasswordResetEmail() {
+              // Make a POST request using Axios to send email
+              axios.post('/forgot-password', { email: 'user@example.com' }) // Replace with actual user email
+              .then(function(response) {
+                  console.log(response);
+                  alert('Password reset email sent successfully!');
+              })
+              .catch(function(error) {
+                  console.error(error);
+                  alert('Error sending password reset email');
+              });
+          }
+      });

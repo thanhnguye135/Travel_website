@@ -29,6 +29,7 @@ exports.getCheckoutSession = async (req, res, next) => {
     ],
   });
 
+  console.log(session);
   //3) create session
   res.status(200).json({
     status: 'success',

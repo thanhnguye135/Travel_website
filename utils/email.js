@@ -10,16 +10,21 @@ module.exports = class Email {
     this.from = `ThanhNG <${process.env.EMAIL_FROM}>`;
   }
 
-  //1) create service email
+  // Create transporter for sending emails
   newTransport() {
     if (process.env.NODE_ENV === 'production') {
-      return 1;
+      return nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: process.env.EMAIL_USERNAME,
+          pass: process.env.EMAIL_PASSWORD,
+        },
+      });
     }
 
+    // For development environment, you may need to set up other options
     return nodemailer.createTransport({
       service: 'gmail',
-      host: process.env.EMAIL_HOST,
-      port: process.env.EMAIL_PORT,
       auth: {
         user: process.env.EMAIL_USERNAME,
         pass: process.env.EMAIL_PASSWORD,
@@ -27,7 +32,7 @@ module.exports = class Email {
     });
   }
 
-  //2) create email option
+  // Send email using Pug template
   async send(template, subject) {
     const html = pug.renderFile(`${__dirname}/../views/${template}.pug`, {
       name: this.name,
@@ -35,7 +40,7 @@ module.exports = class Email {
       subject,
     });
 
-    const emailOption = {
+    const emailOptions = {
       from: this.from,
       to: this.to,
       subject,
@@ -43,10 +48,11 @@ module.exports = class Email {
       text: convert(html),
     };
 
-    //3) active email
-    await this.newTransport().sendMail(emailOption);
+    // Send email using transporter
+    await this.newTransport().sendMail(emailOptions);
   }
 
+  // Method to send welcome email
   async sendWelcome() {
     await this.send(
       'welcome',
@@ -54,6 +60,7 @@ module.exports = class Email {
     );
   }
 
+  // Method to send password reset email
   async sendPasswordReset() {
     await this.send(
       'resetPassword',
