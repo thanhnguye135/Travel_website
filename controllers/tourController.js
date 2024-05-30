@@ -88,14 +88,27 @@ exports.getTour = catchingErrorAsync(async (req, res, next) => {
 });
 
 exports.createTour = catchingErrorAsync(async (req, res, next) => {
-  const newTour = await Tour.create(req.body);
+  try {
+    if (req.files) {
+      if (req.files.imageCover) {
+        req.body.imageCover = req.files.imageCover[0].filename;
+      }
+      if (req.files.images) {
+        req.body.images = req.files.images.map((file) => file.filename);
+      }
+    }
 
-  res.status(201).json({
-    status: 'success',
-    data: {
-      tour: newTour,
-    },
-  });
+    const newTour = await Tour.create(req.body);
+
+    res.status(201).json({
+      status: 'success',
+      data: {
+        tour: newTour,
+      },
+    });
+  } catch (err) {
+    next(new AppError('Error creating tour', 500));
+  }
 });
 
 exports.updateTour = catchingErrorAsync(async (req, res, next) => {

@@ -155,6 +155,9 @@ html(lang='vi')
                                     a.page-link(href='#') #{page + 1}
                                 li.page-item.next(class=(currentPage === totalToursPages ? 'disabled' : ''))
                                     a.page-link(href='#') Next
+
+                        .button-container.text-center
+                            button.btn.btn-primary#addTourButton(type='button', data-bs-toggle='modal', data-bs-target='#addTourModal') Thêm chuyến đi mới           
                
                     #reviews.tab-pane(role='tabpanel')
                         table.table
@@ -452,11 +455,71 @@ html(lang='vi')
                                     button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Đóng
                                     button.btn.btn-primary(type='submit') Cập nhật
 
+            div.modal.fade#addTourModal(tabindex='-1', aria-labelledby='addTourModalLabel', aria-hidden='true')
+                div.modal-dialog
+                    div.modal-content
+                        div.modal-header
+                            h5.modal-title#addTourModalLabel Thêm chuyến đi mới
+                            button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
+                        div.modal-body
+                            form#addTourForm.form-tour-add
+                                .form-group
+                                    label(for='addTourName') Tên chuyến đi:
+                                    input#addTourName.form-control(type='text', name='name', required)
+                                .form-group
+                                    label(for='addDuration') Thời gian chuyến đi:
+                                    input#addDuration.form-control(type='number', name='duration', required)
+                                .form-group
+                                    label(for='addMaxGroupSize') Số lượng người tối đa:
+                                    input#addMaxGroupSize.form-control(type='number', name='maxGroupSize', required)
+                                .form-group
+                                    label(for='addDifficulty') Độ khó:
+                                    select#addDifficulty.form-select(name='difficulty')
+                                        option(value='easy') Dễ
+                                        option(value='medium') Trung bình
+                                        option(value='difficult') Khó
+                                .form-group
+                                    label(for='addRatingsAverage') Đánh giá trung bình:
+                                    input#addRatingsAverage.form-control(type='number', step='0.1', name='ratingsAverage', required)
+                                .form-group
+                                    label(for='addRatingsQuantity') Số lượng lượt đánh giá:
+                                    input#addRatingsQuantity.form-control(type='number', name='ratingsQuantity', required)
+                                .form-group
+                                    label(for='addPrice') Giá:
+                                    input#addPrice.form-control(type='number', name='price', required)
+                                .form-group
+                                    label(for='addSummary') Tóm tắt:
+                                    textarea#addSummary.form-control(name='summary', required)
+                                .form-group
+                                    label(for='addDescription') Mô tả chi tiết:
+                                    textarea#addDescription.form-control(name='description', required)
+                                .form-group
+                                    label(for='addImageCover') Ảnh đại diện chuyến đi:
+                                    input#addImageCover.form-control(type='file', name='imageCover')
+                                .form-group
+                                    label(for='addImages') Ảnh thực tế chuyến đi:
+                                    input#addImages.form-control(type='file', name='images', multiple)
+                                .form-group
+                                    label(for='addStartDates') Ngày khởi hành:
+                                    input#addStartDates.form-control(type='date', name='startDates', required)
+                                .form-group
+                                    label(for='addStartLocation') Địa điểm khởi hành:
+                                    input#addStartLocation.form-control(type='text', name='startLocation', required)
+                                .form-group
+                                    label(for='addLocations') Địa điểm dừng chân:
+                                    input#addLocations.form-control(type='text', name='locations', required)
+                                div.modal-footer
+                                    button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Đóng
+                                    button.btn.btn-primary(type='submit') Thêm mới
+
+
+
         script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js', integrity='sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM', crossorigin='anonymous')
         script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js')
         script(src='/script/logout.js') 
         script(src='/script/pagination.js')
         script(src="/script/edit.js") 
+        //- script(src='/script/addTour.js')
         script.
             document.addEventListener('DOMContentLoaded', function () {
                 const rowsPerPage = 10; // Number of rows per page
@@ -472,6 +535,15 @@ html(lang='vi')
                 });
 
                 document.getElementById('editImages').addEventListener('change', function(event) {
+                    const fileInput = event.target;
+                    if (fileInput.files.length > 3) {
+                        alert("You can only upload a maximum of 3 files");
+                        fileInput.value = ''; // Clear the input
+                    }
+                });
+
+                
+                document.getElementById('addImages').addEventListener('change', function(event) {
                     const fileInput = event.target;
                     if (fileInput.files.length > 3) {
                         alert("You can only upload a maximum of 3 files");

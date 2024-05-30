@@ -21,11 +21,11 @@ tourRouter
   );
 
 tourRouter
-  .route('/')
   .get(tourController.getAllTours)
   .post(
     authenController.protect,
     authenController.restrictTo('admin'),
+    tourController.uploadTourImages,
     tourController.createTour
   );
 
