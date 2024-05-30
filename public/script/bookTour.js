@@ -7,15 +7,13 @@ const bookTour = async (tourID) => {
     // 1) Get checkout session
     const {
       data: { session },
-    } = await axios.get(
-      `http://localhost:5000/api/v1/bookings/checkout-session/${tourID}`
-    );
+    } = await axios.get(`/api/v1/bookings/checkout-session/${tourID}`);
 
     // 2) Redirect to checkout
     await stripe.redirectToCheckout({ sessionId: session.id });
   } catch (error) {
     console.error(error);
-    alert('Error: Unable to book the tour. Please try again later.');
+    alert('Error: Không thể đặt lịch ngay bây giờ. Vui lòng thử lại sau.');
   }
 };
 
@@ -24,10 +22,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (bookBtn) {
     bookBtn.addEventListener('click', async (event) => {
-      event.target.textContent = 'Processing...';
+      event.target.textContent = 'Quá trình đang diễn ra...';
       const { tourID } = event.target.dataset;
       await bookTour(tourID);
-      event.target.textContent = 'Book Now';
+      event.target.textContent = 'Đặt lịch ngay';
     });
   }
 });
